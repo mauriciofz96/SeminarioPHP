@@ -67,6 +67,5 @@ $app->post('/registro', function (Request $request, Response $response) {
 
 // Endpoint para crear mazo (requiere autenticación)
 $app->post('/mazos', MazoController::class . ':crearMazo')->add(new AuthMiddleware($jwtSecret));
-error_log("CLAVE CARGADA DESDE .env: " . $jwtSecret);
 
 $app->run();

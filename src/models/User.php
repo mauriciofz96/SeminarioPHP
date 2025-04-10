@@ -64,7 +64,7 @@ class User {
         return null; 
     }
 
-    // 🔹 Crear un nuevo usuario
+    // Crear un nuevo usuario
     public static function crearUsuario($nombre, $usuario, $password) {
         try {
             $db = DB::getConnection(); 

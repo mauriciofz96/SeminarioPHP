@@ -40,6 +40,7 @@ class UserController {
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
             }
 
+            // chequear clave secreta
             error_log("CLAVE USADA PARA FIRMAR TOKEN (desde login): " . $jwt_secret);
             error_log("Longitud: " . strlen($jwt_secret));
 

@@ -9,6 +9,9 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
 // Forzar que todas las variables estén en $_SERVER y disponibles con getenv()
+// Hecho de esta manera porque no las podia obtener de $_ENV
+// y no se pueden usar directamente en el archivo de configuración
+
 foreach ($_ENV as $key => $value) {
     $_SERVER[$key] = $value;
     putenv("$key=$value");

@@ -23,7 +23,7 @@ class MazoController {
         $usuarioId = $usuario->sub;
 
 
-        // Validar que esté todo presente
+        // Validar los datos recibidos
         if (!$nombre || !is_array($ids_cartas)) {
             $response->getBody()->write(json_encode(['error' => 'Nombre del mazo y cartas son requeridos.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');

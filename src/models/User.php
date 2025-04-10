@@ -11,7 +11,7 @@ use Firebase\JWT\Key;
 class User {
     // obtener clave secreta desde variables de entorno para manejar los tokens
     private static function getSecretKey() {
-        return $_ENV['JWT_SECRET'] ?? 'clave_por_defecto';
+        return $_ENV['JWT_SECRET'] ?? $_SERVER['JWT_SECRET'] ?? getenv('JWT_SECRET') ?: 'clave_por_defecto';
     }
 
     // verificar credenciales del usuario

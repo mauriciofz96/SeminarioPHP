@@ -65,6 +65,27 @@ $app->post('/registro', function (Request $request, Response $response) {
     return $response->withStatus($resultado['status'])->withHeader('Content-Type', 'application/json');
 });
 
+//Endpoint para obtener la informacion del usuario
+$app->get('/usuarios/{usuario}', function (Request $request, Response $response, array $args) {
+    $usuario = $args['usuario']; // Este parámetro no es necesario ahora si lo tomamos del token
+    $token = $request->getHeader('Authorization')[0] ?? ''; // Obtener el token del encabezado
+    $token = str_replace('Bearer ', '',$token); //saco el bearer del token
+    $token = trim($token); //saco espacios en blanco
+    
+    // Llamar a la función de UserController para obtener información del usuario usando el token
+    $resultado = UserController::obtenerInformacionUsuario($token);
+
+    // Verificar la respuesta del controlador
+    if ($resultado['status'] === 200) {
+        $response->getBody()->write(json_encode($resultado['data']));
+    } else {
+        $response->getBody()->write(json_encode(['error' => $resultado['mensaje']]));
+    }
+
+    return $response->withHeader('Content-Type', 'application/json')->withStatus($resultado['status']);
+});
+
+
 // Endpoint para crear mazo (requiere autenticación)
 $app->post('/mazos', MazoController::class . ':crearMazo')->add(new AuthMiddleware($jwtSecret));
 

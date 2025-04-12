@@ -97,4 +97,24 @@ class User {
             return "Error al crear el usuario.";
         }
     }
+
+    // Obtener información del usuario
+    public static function obtenerInformacionPorUsuario($usuario){
+        try{
+            $db= DB::getConnection();
+            $query="SELECT id, nombre, usuario FROM usuario WHERE usuario = :usuario";
+            $stmt=$db->prepare($query);
+            $stmt->bindParam(':usuario',$usuario);
+            $stmt->execute();
+            
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $user ?: null; // Retorna null si no se encuentra el usuario
+    
+        } catch (PDOException $e){
+            error_log("Error al obtener informacion del usuario: " . $e->getMessage());
+            return null;
+        }
+        }
+
 }

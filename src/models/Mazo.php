@@ -91,4 +91,56 @@ class Mazo {
             return false;
         }
     }
+
+    // Borra un mazo si no ha participado en ninguna partida
+    // Borra un mazo si no ha participado en ninguna partida y pertenece al usuario
+public static function borrarMazo($mazo_id, $usuario_id) {
+    try {
+        $db = DB::getConnection();
+        $db->beginTransaction();
+
+        // Verificar que el mazo exista y que le pertenezca al usuario
+        $stmt = $db->prepare("SELECT COUNT(*) FROM mazo WHERE id = :mazo_id AND usuario_id = :usuario_id");
+        $stmt->execute([
+            ':mazo_id' => $mazo_id,
+            ':usuario_id' => $usuario_id
+        ]);
+        if ($stmt->fetchColumn() == 0) {
+            // No existe o no pertenece al usuario
+            $db->rollBack();
+            return ['error' => 'no_encontrado'];
+        }
+
+        // Verificar si el mazo participó en alguna partida
+        $stmt = $db->prepare("SELECT COUNT(*) FROM partida WHERE mazo_id = :mazo_id");
+        $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $participaciones = $stmt->fetchColumn();
+
+        if ($participaciones > 0) {
+            $db->rollBack();
+            return ['error' => 'conflicto'];
+        }
+
+        // Borrar primero las cartas asociadas (por si hay restricción de FK)
+        $stmt = $db->prepare("DELETE FROM mazo_carta WHERE mazo_id = :mazo_id");
+        $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Borrar el mazo
+        $stmt = $db->prepare("DELETE FROM mazo WHERE id = :mazo_id");
+        $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $db->commit();
+        return ['ok' => true];
+    } catch (\PDOException $e) {
+        if (isset($db)) {
+            $db->rollBack();
+        }
+        error_log("Error en borrarMazo: " . $e->getMessage());
+        return ['error' => 'error_interno'];
+    }
+}
+
 }

@@ -123,4 +123,7 @@ $app->put('/usuarios/{usuario}', function (Request $request, Response $response,
 // Endpoint para crear mazo (requiere autenticación)
 $app->post('/mazos', MazoController::class . ':crearMazo')->add(new AuthMiddleware($jwtSecret));
 
+// Endpoint para borrar mazo si no ha partipado de ninguna partida (requiere autenticación)
+$app->delete('/mazos/{id}', MazoController::class . ':borrarMazo')->add(new AuthMiddleware($jwtSecret));
+
 $app->run();

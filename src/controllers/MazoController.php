@@ -70,4 +70,41 @@ class MazoController {
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
     }
+
+    // Borrar mazo
+    public function borrarMazo(Request $request, Response $response, array $args): Response {
+        $mazoId = $args['id'] ?? null;
+    
+        if (!$mazoId) {
+            $response->getBody()->write(json_encode(['error' => 'ID de mazo requerido.']));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+    
+        $usuario = $request->getAttribute('usuario');
+        $usuarioId = $usuario->sub;
+    
+        $resultado = Mazo::borrarMazo($mazoId, $usuarioId);
+    
+        if ($resultado === ['ok' => true]) {
+            $response->getBody()->write(json_encode(['mensaje' => 'Mazo borrado exitosamente.']));
+            return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+        }
+    
+        if ($resultado['error'] === 'no_encontrado') {
+            $response->getBody()->write(json_encode(['error' => 'El mazo no existe o no pertenece al usuario.']));
+            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+        }
+    
+        if ($resultado['error'] === 'conflicto') {
+            $response->getBody()->write(json_encode(['error' => 'El mazo no puede ser borrado porque ya participó en una partida.']));
+            return $response->withStatus(409)->withHeader('Content-Type', 'application/json');
+        }
+    
+        // Error interno
+        $response->getBody()->write(json_encode(['error' => 'Error interno al intentar borrar el mazo.']));
+        return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+    }
+    
+    
+
 }

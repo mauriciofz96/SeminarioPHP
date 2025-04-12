@@ -108,7 +108,31 @@ class UserController {
         }
     }
     
+    //funcion  para cambiar info de usuario
+    public static function actualizarInformacion($usuario, $data, $usuarioAutenticado) {
+        try {
+            // Verificar que el usuario en el token coincida con el usuario solicitado
+            if ($usuarioAutenticado !== $usuario) {
+                return ['status' => 403, 'mensaje' => 'No tienes permiso para editar este usuario'];
+            }
     
-
+            // Validar datos enviados
+            if (!isset($data['nombre'], $data['password'])) {
+                return ['status' => 400, 'mensaje' => 'Faltan datos obligatorios'];
+            }
+    
+            // Llamar al modelo para cambiar la información
+            $resultado = User::cambiarInfo($usuario, $data['nombre'], $data['password']);
+            if ($resultado === true) {
+                return ['status' => 200, 'mensaje' => 'Información actualizada.'];
+            } else {
+                return ['status' => 400, 'mensaje' => $resultado];
+            }
+    
+        } catch (\Exception $e) {
+            return ['status' => 500, 'mensaje' => 'Error al procesar la solicitud'];
+        }
+    }
+    
 
 }

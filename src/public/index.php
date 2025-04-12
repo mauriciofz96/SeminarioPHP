@@ -85,6 +85,40 @@ $app->get('/usuarios/{usuario}', function (Request $request, Response $response,
     return $response->withHeader('Content-Type', 'application/json')->withStatus($resultado['status']);
 });
 
+// Endpoint para cambiar info de usuario logeado
+$app->put('/usuarios/{usuario}', function (Request $request, Response $response, array $args) {
+    // Obtener el usuario autenticado desde el middleware
+    $usuarioAutenticado = $request->getAttribute('usuario');
+
+    // Obtener el usuario que intenta editar
+    $usuario = $args['usuario'];
+
+    // Verificar que el usuario autenticado coincida con el usuario de la URL
+    if ($usuarioAutenticado !== $usuario) {
+        // Responder con error 403 si no se tiene permiso
+        $response->getBody()->write(json_encode(['error' => 'No tienes permiso para editar este usuario']));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
+    }
+
+    // Obtener los datos del cuerpo de la solicitud
+    $data = $request->getParsedBody();
+
+    // Llamar al controlador para actualizar la información
+    $resultado = UserController::actualizarInformacion($usuario, $data, $usuarioAutenticado);
+
+    // Verificar la respuesta del controlador y devolver el mensaje adecuado
+    if ($resultado['status'] === 200) {
+        // Si la actualización es exitosa, devolver el mensaje
+        $response->getBody()->write(json_encode(['mensaje' => $resultado['mensaje']]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    } else {
+        // Si hubo un error, devolver el mensaje de error
+        $response->getBody()->write(json_encode(['error' => $resultado['mensaje']]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($resultado['status']);
+    }
+});
+
+
 
 // Endpoint para crear mazo (requiere autenticación)
 $app->post('/mazos', MazoController::class . ':crearMazo')->add(new AuthMiddleware($jwtSecret));

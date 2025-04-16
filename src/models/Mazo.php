@@ -158,4 +158,35 @@ public static function borrarMazo($mazo_id, $usuario_id) {
         }
     }
 
+    // Cambia el nombre de un mazo
+    public static function cambiarNombreMazo($mazo_id, $nuevo_nombre, $usuario_id) {
+        try {
+            $db = DB::getConnection();
+    
+            // Primero validar si el mazo pertenece al usuario
+            $query = "SELECT COUNT(*) FROM mazo WHERE id = :mazo_id AND usuario_id = :usuario_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+            $stmt->bindParam(":usuario_id", $usuario_id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            if ($stmt->fetchColumn() == 0) {
+                return 'unauthorized'; // no le pertenece
+            }
+    
+            // Ahora actualizamos
+            $query = "UPDATE mazo SET nombre = :nuevo_nombre WHERE id = :mazo_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":nuevo_nombre", $nuevo_nombre);
+            $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+    
+            return $stmt->execute();
+    
+        } catch (\PDOException $e) {
+            error_log("Error en cambiarNombreMazo: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+
 }

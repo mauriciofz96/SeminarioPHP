@@ -129,4 +129,7 @@ $app->delete('/mazos/{id}', MazoController::class . ':borrarMazo')->add(new Auth
 // Endpoint para obtener mazos de un usuario (requiere autenticación)
 $app->get('/usuarios/{id}/mazos', MazoController::class . ':obtenerMazos')->add(new AuthMiddleware($jwtSecret));
 
+// Endpoint para cambiar nombre de mazo (requiere autenticación)
+$app->put('/mazos/{mazo}', MazoController::class . ':cambiarNombreMazo')->add(new AuthMiddleware($jwtSecret));
+
 $app->run();

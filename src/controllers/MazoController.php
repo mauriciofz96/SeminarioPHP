@@ -130,6 +130,35 @@ class MazoController {
         $response->getBody()->write(json_encode($mazos));
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
+
+    // Cambiar nombre de mazo
+    public function cambiarNombreMazo(Request $request, Response $response, array $args): Response {
+        $mazoId = $args['mazo'] ?? null;
+        $nuevoNombre = $request->getParsedBody()['nombre'] ?? null;
+    
+        if (!$mazoId || !$nuevoNombre) {
+            $response->getBody()->write(json_encode(['error' => 'ID de mazo y nuevo nombre son requeridos.']));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+    
+        $usuario = $request->getAttribute('usuario');
+        $usuarioId = $usuario->sub;
+    
+        $resultado = Mazo::cambiarNombreMazo($mazoId, $nuevoNombre, $usuarioId);
+    
+        if ($resultado === 'unauthorized') {
+            $response->getBody()->write(json_encode(['error' => 'No estás autorizado a modificar este mazo.']));
+            return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
+        }
+    
+        if ($resultado === false) {
+            $response->getBody()->write(json_encode(['error' => 'Error al cambiar el nombre del mazo.']));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    
+        $response->getBody()->write(json_encode(['mensaje' => 'Nombre del mazo cambiado exitosamente.']));
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+    }
     
 
 }

@@ -107,24 +107,29 @@ class MazoController {
     
     // Obtener mazos de un usuario
     public function obtenerMazos(Request $request, Response $response, array $args): Response {
-        $usuarioId = $args['id'] ?? null;
+        $usuarioIdParam = $args['id'] ?? null;
+        $usuarioIdToken = $request->getAttribute('usuario_id'); // Lo injecta el AuthMiddleware
     
-        if (!$usuarioId) {
+        if (!$usuarioIdParam) {
             $response->getBody()->write(json_encode(['error' => 'ID de usuario requerido.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
     
-        // Obtener mazos del usuario
-        $mazos = Mazo::obtenerMazosPorUsuario($usuarioId);
+        if ((int)$usuarioIdParam !== (int)$usuarioIdToken) {
+            $response->getBody()->write(json_encode(['error' => 'No autorizado para acceder a los mazos de otro usuario.']));
+            return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
+        }
+    
+        $mazos = Mazo::obtenerMazosPorUsuario((int)$usuarioIdParam);
     
         if ($mazos === false) {
             $response->getBody()->write(json_encode(['error' => 'Error al obtener los mazos.']));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
     
-        // Devolver los mazos en formato JSON
         $response->getBody()->write(json_encode($mazos));
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
+    
 
 }

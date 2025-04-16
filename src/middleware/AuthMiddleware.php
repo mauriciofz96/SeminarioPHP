@@ -43,6 +43,7 @@ class AuthMiddleware
 
             // Guardamos el usuario decodificado en el request
             $request = $request->withAttribute('usuario', $decoded);
+            $request = $request->withAttribute('usuario_id', $decoded->sub);
 
             return $handler->handle($request);
 

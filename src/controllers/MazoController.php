@@ -105,6 +105,26 @@ class MazoController {
         return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
     }
     
+    // Obtener mazos de un usuario
+    public function obtenerMazos(Request $request, Response $response, array $args): Response {
+        $usuarioId = $args['id'] ?? null;
     
+        if (!$usuarioId) {
+            $response->getBody()->write(json_encode(['error' => 'ID de usuario requerido.']));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+    
+        // Obtener mazos del usuario
+        $mazos = Mazo::obtenerMazosPorUsuario($usuarioId);
+    
+        if ($mazos === false) {
+            $response->getBody()->write(json_encode(['error' => 'Error al obtener los mazos.']));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    
+        // Devolver los mazos en formato JSON
+        $response->getBody()->write(json_encode($mazos));
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+    }
 
 }

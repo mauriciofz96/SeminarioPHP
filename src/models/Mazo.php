@@ -143,4 +143,19 @@ public static function borrarMazo($mazo_id, $usuario_id) {
     }
 }
 
+    // Obtiene los mazos de un usuario (solo nombre e id)
+    public static function obtenerMazosPorUsuario($usuario_id) {
+        try {
+            $db = DB::getConnection();
+            $query = "SELECT id, nombre FROM mazo WHERE usuario_id = :usuario_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":usuario_id", $usuario_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); // devuelve todos los mazos del usuario con solo id y nombre
+        } catch (\PDOException $e) {
+            error_log("Error en obtenerMazos: " . $e->getMessage());
+            return false;
+        }
+    }
+
 }

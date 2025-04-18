@@ -50,6 +50,8 @@ $app->get('/', function (Request $request, Response $response) {
     return $response;
 });
 
+// USER
+
 // Endpoint para login
 $app->post('/login', \App\controllers\UserController::class . ':login');
 
@@ -118,7 +120,7 @@ $app->put('/usuarios/{usuario}', function (Request $request, Response $response,
     }
 });
 
-
+// MAZO
 
 // Endpoint para crear mazo (requiere autenticación)
 $app->post('/mazos', MazoController::class . ':crearMazo')->add(new AuthMiddleware($jwtSecret));
@@ -131,5 +133,10 @@ $app->get('/usuarios/{id}/mazos', MazoController::class . ':obtenerMazos')->add(
 
 // Endpoint para cambiar nombre de mazo (requiere autenticación)
 $app->put('/mazos/{mazo}', MazoController::class . ':cambiarNombreMazo')->add(new AuthMiddleware($jwtSecret));
+
+// ESTADISTICA
+
+$app->get('/estadisticas', \App\controllers\EstadisticaController::class . ':getEstadisticas');
+
 
 $app->run();

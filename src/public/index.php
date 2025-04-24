@@ -35,6 +35,7 @@ use Slim\Factory\AppFactory;
 require_once __DIR__ . '/../controllers/UserController.php';
 use App\Controllers\UserController;
 use App\Controllers\MazoController;
+use App\Controllers\CartaController;
 use App\middleware\AuthMiddleware;
 
 $app = AppFactory::create();
@@ -134,9 +135,11 @@ $app->get('/usuarios/{id}/mazos', MazoController::class . ':obtenerMazos')->add(
 // Endpoint para cambiar nombre de mazo (requiere autenticación)
 $app->put('/mazos/{mazo}', MazoController::class . ':cambiarNombreMazo')->add(new AuthMiddleware($jwtSecret));
 
+// Enpoint para listar las cartas según los parámetros de búsqueda incluyendo los puntos de ataque (requiere autenticación)
+$app->get('/cartas', CartaController::class . ':listarCartasPorFiltro');
+
 // ESTADISTICA
 
-$app->get('/estadisticas', \App\controllers\EstadisticaController::class . ':getEstadisticas');
-
+$app->get('/estadisticas', \App\controllers\EstadisticaController::class . ':listarCartasPorFiltro');
 
 $app->run();

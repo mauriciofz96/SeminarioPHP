@@ -14,39 +14,24 @@ class User {
         return $_ENV['JWT_SECRET'] ?? $_SERVER['JWT_SECRET'] ?? getenv('JWT_SECRET') ?: 'clave_por_defecto';
     }
 
-    // verificar credenciales del usuario
+    
     public static function verificarCredenciales($nombre, $usuario, $password) {
         try {
             $db = DB::getConnection();
             $query = "SELECT * FROM usuario WHERE usuario = :usuario";
-            $stmt = $db->prepare($query); //variable que reprenseta la consulta preparada
-            $stmt->bindParam(":usuario", $usuario); //asocia los valores
-            $stmt->execute(); //ejecuta la consulta 
-
-            $user = $stmt->fetch(PDO::FETCH_ASSOC); //recupera la consulta en un arreglo, si no hay resultado es false 
-
-            if ($user && password_verify($password, $user['password'])) { //compara las contrasenias
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":usuario", $usuario);
+            $stmt->execute();
+    
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            // Verificar que el usuario exista y que la contraseña coincida
+            if ($user && $password === $user['password']) {
                 return $user;
             }
             return false;
         } catch (\PDOException $e) {
             error_log("Error en verificarCredenciales: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    // guardar el token de autenticación en la base de datos
-    public static function guardarToken($usuario, $token, $expiracion) {
-        try {
-            $db = DB::getConnection();
-            $query = "UPDATE usuario SET token = :token, vencimiento_token = :expiracion WHERE usuario = :usuario";
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(":token", $token);
-            $stmt->bindParam(":expiracion", $expiracion);
-            $stmt->bindParam(":usuario", $usuario);
-            return $stmt->execute();
-        } catch (\PDOException $e) {
-            error_log("Error en guardarToken: " . $e->getMessage());
             return false;
         }
     }
@@ -64,40 +49,36 @@ class User {
         return null; 
     }
 
-    // Crear un nuevo usuario
     public static function crearUsuario($nombre, $usuario, $password) {
         try {
-            $db = DB::getConnection(); 
-
+            $db = DB::getConnection();
+    
             $error = self::validarDatos($usuario, $password);
             if ($error) {
                 return $error;
             }
-
-            // verificar si el usuario ya existe
+    
+            // Verificar si el usuario ya existe
             $stmt = $db->prepare("SELECT id FROM usuario WHERE usuario = :usuario");
             $stmt->execute([':usuario' => $usuario]);
-
+    
             if ($stmt->rowCount() > 0) {
                 return "El usuario ya está en uso.";
             }
-
-            // Cifrar contraseña y registrar usuario
-            $claveHash = password_hash($password, PASSWORD_DEFAULT);
+    
+            // Guardar la contraseña en texto plano (no recomendado)
             $stmt = $db->prepare("INSERT INTO usuario (nombre, usuario, password) VALUES (:nombre, :usuario, :password)");
             $exito = $stmt->execute([
                 ':nombre' => $nombre,
                 ':usuario' => $usuario,
-                ':password' => $claveHash
+                ':password' => $password
             ]);
-
+    
             return $exito ? true : "Error al crear el usuario.";
         } catch (\PDOException $e) {
-            error_log("Error en crearUsuario: " . $e->getMessage());
-            return "Error al crear el usuario.";
+            return "Error en crearUsuario: " . $e->getMessage();
         }
     }
-
     // Obtener información del usuario
     public static function obtenerInformacionPorUsuario($usuario){
         try{
@@ -111,7 +92,7 @@ class User {
             
             return $user ?: null; // Retorna null si no se encuentra el usuario
     
-        } catch (PDOException $e){
+        } catch (\PDOException $e){
             error_log("Error al obtener informacion del usuario: " . $e->getMessage());
             return null;
         }
@@ -143,27 +124,45 @@ class User {
                 return "Contraseña inválida. Debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y un carácter especial.";
             }
     
-            // Cifrar contraseña
-            $claveHash = password_hash($password, PASSWORD_DEFAULT);
-    
-            // Actualizar información
-            $query = "UPDATE usuario SET nombre = :nombre, password = :password WHERE usuario = :usuario";
+        // Actualizar información
+        $query = "UPDATE usuario SET nombre = :nombre, password = :password WHERE usuario = :usuario";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':usuario', $usuario);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return "No se realizaron cambios en la información.";
+        }
+    } catch (\PDOException $e) {
+        error_log("Error en cambiarInfo: " . $e->getMessage());
+        return "Error al actualizar la información del usuario.";
+    }
+}
+    public static function guardarToken($usuario, $token, $fechaExpiracion) {
+        try {
+            $db = DB::getConnection();
+
+            // Actualizar el token y la fecha de expiración en la base de datos
+            $query = "UPDATE usuario SET token = :token, vencimiento_token = :vencimiento WHERE usuario = :usuario";
             $stmt = $db->prepare($query);
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':password', $claveHash);
+            $stmt->bindParam(':token', $token);
+            $stmt->bindParam(':vencimiento', $fechaExpiracion);
             $stmt->bindParam(':usuario', $usuario);
+
             $stmt->execute();
-    
+
             if ($stmt->rowCount() > 0) {
-                return true;
+                return true; // Token guardado correctamente
             } else {
-                return "No se realizaron cambios en la información.";
+                return "No se pudo guardar el token. Verifica que el usuario exista.";
             }
-        } catch (PDOException $e) {
-            error_log("Error en cambiarInfo: " . $e->getMessage());
-            return "Error al actualizar la información del usuario.";
+        } catch (\PDOException $e) {
+            error_log("Error al guardar el token: " . $e->getMessage());
+            return "Error al guardar el token.";
         }
     }
 }
-
-

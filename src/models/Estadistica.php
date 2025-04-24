@@ -35,7 +35,7 @@ class Estadistica {
     
             return ['status' => 200, 'data' => $resultados];
     
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             // Lanza solo excepciones relacionadas con la base de datos
             throw new \Exception("Error en la consulta: " . $e->getMessage());
         }

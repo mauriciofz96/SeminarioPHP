@@ -11,8 +11,7 @@ class DB {
         if (!self::$connection) {
             // Cargar configuración
             $config = require __DIR__ . '/../config/config.php';
-
-            // Obtener datos de conexión desde config.php
+            
             $host = $config['db']['host'];
             $dbname = $config['db']['dbname'];
             $user = $config['db']['user'];

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class MazoController {
 
-    public function crearMazo(Request $request, Response $response): Response {
+    public static function crearMazo(Request $request, Response $response): Response {
         // Obtener los datos del cuerpo de la solicitud
         $datos = $request->getParsedBody();
 
@@ -160,5 +160,5 @@ class MazoController {
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
     
-
+    // 
 }

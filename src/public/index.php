@@ -121,6 +121,11 @@ $app->put('/usuarios/{usuario}', function (Request $request, Response $response,
     }
 });
 
+// JUEGO
+
+$app->get('/usuarios/{usuario}/partidas/{partida}/cartas', CartaController::class . ':listarCartasEnMano')->add(new AuthMiddleware($jwtSecret));
+
+
 // MAZO
 
 // Endpoint para crear mazo (requiere autenticación)

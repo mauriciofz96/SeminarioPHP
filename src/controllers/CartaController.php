@@ -31,4 +31,34 @@ class CartaController {
         $response->getBody()->write(json_encode($cartas));
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
+
+    public function listarCartasEnMano(Request $request, Response $response, $args): Response {
+        $usuario = $args['usuario'];
+        $partida = $args['partida'];
+    
+        // Validar que sean números válidos
+        if (!is_numeric($usuario) || !is_numeric($partida)) {
+            $response->getBody()->write(json_encode(['error' => 'Parámetros inválidos']));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+    
+        try {
+            $cartas = Carta::obtenerCartasEnManoPorUsuarioYPartida($usuario, $partida);
+    
+            if (empty($cartas)) {
+                $response->getBody()->write(json_encode(['error' => 'No se encontraron cartas en mano']));
+                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+            }
+    
+            $response->getBody()->write(json_encode($cartas));
+            return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+    
+        } catch (Exception $e) {
+            $response->getBody()->write(json_encode(['error' => 'Error interno del servidor']));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }
+    
+    
+    
 }

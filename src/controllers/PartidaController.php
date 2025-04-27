@@ -5,7 +5,6 @@ namespace App\controllers;
 use App\models\Mazo;
 use App\models\Partida;
 use App\models\Carta;
-use Error;
 
 require_once __DIR__ . '\..\models\Partida.php';
 

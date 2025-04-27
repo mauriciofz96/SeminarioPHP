@@ -79,6 +79,80 @@ class Carta{
             return [];
         }
     }
+
+    //Obtengo los datos de una carta (se debe validar que esté en el mazo)
+    public static function obtenerDatos($carta_id,$mazo_id){
+        try{
+            $db=DB::getConnection();
+            $query="SELECT id, ataque, atributo_id FROM carta WHERE id = :carta_id";
+            $stmt=$db->prepare($query);
+            $stmt->bindParam(":carta_id",$carta_id);
+            $stmt->execute();
+            $resultado=$stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!$resultado){
+                error_log('Error en la obtencion de la carta');
+                return false;
+            }
+            
+            //obtengo el estado de la carta
+            $query="SELECT estado FROM mazo_carta WHERE mazo_id = :mazo_id AND carta_id = :carta_id";
+            $stmt=$db->prepare($query);
+            $stmt->bindParam(":carta_id",$carta_id);
+            $stmt->bindParam(":mazo_id",$mazo_id);  
+            $stmt->execute();
+            $estado=$stmt->fetchColumn();
+            if(!$estado){
+                error_log('Error en la obtencion del estado de la carta');
+                return false;
+            }
+            //agrego el estado al resultado
+            $resultado['estado']=$estado;
+            return $resultado;
+            
+
+        }catch(PDOException $e){
+            error_log('Error en obtenerDatosCarta'. $e->getMessage());
+            return false;
+        }
+    }
+
+    //Devuelvo el atributo que tiene ventaja sobre el otro (sino devuelve null)
+    public static function atributoConVentaja($atributo_a, $atributo_b){
+        try{
+            //obtengo los atributos a los que les gana el atributo_a
+            $db=DB::getConnection();
+            $query="SELECT atributo_id2 FROM gana_a WHERE atributo_id = :atributo_id";
+            $stmt=$db->prepare($query);
+            $stmt->bindParam(":atributo_id",$atributo_a);
+            $stmt->execute();
+
+            $gana_a=$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            //obtengo los atributos a los que les gana el atributo_b
+            $db=DB::getConnection();
+            $query="SELECT atributo_id2 FROM gana_a WHERE atributo_id = :atributo_id";
+            $stmt=$db->prepare($query);
+            $stmt->bindParam(":atributo_id",$atributo_b);
+            $stmt->execute();
+
+            $gana_b=$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+            //si el atributo_a gana al atributo_b, devuelve el atributo_a
+            //si el atributo_b gana al atributo_a, devuelve el atributo_b
+            //si ninguno gana, devuelve null;
+            $gana_a=array_column($gana_a, 'atributo_id2');
+            $gana_b=array_column($gana_b, 'atributo_id2');
+            if(in_array($atributo_b,$gana_a)) return $atributo_a;
+            else if(in_array($atributo_a,$gana_b)) return $atributo_b;
+            else return null;
+
+        }catch(PDOException $e){
+            error_log('Error en obtenerDatosCarta');
+            return false;
+        }
+    }
     
     
     

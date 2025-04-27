@@ -147,4 +147,15 @@ $app->get('/cartas', CartaController::class . ':listarCartasPorFiltro');
 
 $app->get('/estadisticas', \App\controllers\EstadisticaController::class . ':listarCartasPorFiltro');
 
+
+//PARTIDA
+
+// Endpoint para crear partida (requiere autenticacion)
+$app->post('/partidas', \App\controllers\PartidaController::class . ':crearPartida')->add(new AuthMiddleware($jwtSecret));
+
+//Endpoint para generar una jugada (requiere autenticacion)
+$app->post('/jugadas', \App\controllers\PartidaController::class . ':realizarJugada')->add(new AuthMiddleware($jwtSecret));
+
+
+
 $app->run();

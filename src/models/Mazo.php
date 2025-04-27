@@ -187,6 +187,41 @@ class Mazo {
         }
     }
 
+    // Cambia el estado de todas las cartas de un mazo a 'en_mano'
+    public static function actualizarEstadoCartas($mazo_id){
+        try {
+            $db= DB::getConnection();
+            $estado = 'en_mano';
+            $stmt=$db->prepare("UPDATE mazo_carta SET estado = :estado WHERE mazo_id = :mazo_id");
+            $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+            $stmt->bindParam(":estado", $estado);
+            $stmt->execute();
+
+            return true;
+
+        }catch (\PDOException $e){
+            error_log( "Error en la actualizacion de estado de las cartas: " . $e->getMessage());
+            return false;
+        }
+
+    }
+
+    // Obtiene  todas las cartas de un mazo (id's de cartas solamente)
+    public static function obtenerCartasPorMazo($mazo_id){
+        try {
+            $db = DB::getConnection();
+            // obtener todos los id's de las cartas de un mazo
+            $stmt = $db->prepare("SELECT carta_id FROM mazo_carta WHERE mazo_id = :mazo_id");
+            $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $ids_cartas = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            return $ids_cartas;
+        } catch(\PDOException $e) {
+             return false;
+        }
+    }
+
     // Listar las cartas según los parámetros de búsqueda incluyendo los puntos de ataque.
     
     

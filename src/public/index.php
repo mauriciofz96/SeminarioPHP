@@ -70,13 +70,13 @@ $app->post('/registro', function (Request $request, Response $response) {
 
 //Endpoint para obtener la informacion del usuario
 $app->get('/usuarios/{usuario}', function (Request $request, Response $response, array $args) {
-    $usuario = $args['usuario']; // Este parámetro no es necesario ahora si lo tomamos del token
+    $id=$args['usuario'];
     $token = $request->getHeader('Authorization')[0] ?? ''; // Obtener el token del encabezado
     $token = str_replace('Bearer ', '',$token); //saco el bearer del token
     $token = trim($token); //saco espacios en blanco
-    
-    // Llamar a la función de UserController para obtener información del usuario usando el token
-    $resultado = UserController::obtenerInformacionUsuario($token);
+
+    // Llamar a la función de UserController para obtener información del usuario usando el id
+    $resultado = UserController::obtenerInformacionUsuario($id,$token);
 
     // Verificar la respuesta del controlador
     if ($resultado['status'] === 200) {
@@ -90,24 +90,19 @@ $app->get('/usuarios/{usuario}', function (Request $request, Response $response,
 
 // Endpoint para cambiar info de usuario logeado
 $app->put('/usuarios/{usuario}', function (Request $request, Response $response, array $args) {
-    // Obtener el usuario autenticado desde el middleware
-    $usuarioAutenticado = $request->getAttribute('usuario');
+    // Obtener el token
+    $token= $request->getHeader('Authorization')[0] ?? '';
+    $token = str_replace('Bearer ', '',$token);
+    $token = trim($token);
 
-    // Obtener el usuario que intenta editar
-    $usuario = $args['usuario'];
-
-    // Verificar que el usuario autenticado coincida con el usuario de la URL
-    if ($usuarioAutenticado !== $usuario) {
-        // Responder con error 403 si no se tiene permiso
-        $response->getBody()->write(json_encode(['error' => 'No tienes permiso para editar este usuario']));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
-    }
+    //obtener el id del usuario desde la url
+    $id = $args['usuario'];
 
     // Obtener los datos del cuerpo de la solicitud
     $data = $request->getParsedBody();
 
     // Llamar al controlador para actualizar la información
-    $resultado = UserController::actualizarInformacion($usuario, $data, $usuarioAutenticado);
+    $resultado = UserController::actualizarInformacion($id, $data, $token);
 
     // Verificar la respuesta del controlador y devolver el mensaje adecuado
     if ($resultado['status'] === 200) {

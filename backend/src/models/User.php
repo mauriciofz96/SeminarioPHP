@@ -91,7 +91,7 @@ class User {
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            return $user ?: null; // Retorna null si no se encuentra el usuario  
+            return $user ?: null; 
         
         } catch (\PDOException $e){
             error_log("Error al obtener informacion del usuario: " . $e->getMessage());
@@ -103,7 +103,7 @@ class User {
     public static function cambiarInfo($id, $nombre, $password) {
         try {
             $db = DB::getConnection();
-        // Obtener los datos actuales del usuario por id
+        
         $query = "SELECT nombre, password FROM usuario WHERE id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':id', $id);
@@ -115,18 +115,18 @@ class User {
             return "Usuario no encontrado.";
         }
 
-        // Verificar si los datos enviados son iguales a los actuales
+        
         if ($user['nombre'] === $nombre && $password === $user['password']) {
             return "No se realizaron cambios porque los datos enviados son iguales a los existentes.";
         }
 
-        // Verificar que la contraseña nueva sea válida
+        
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password)) {
             return "Contraseña invalida. Debe tener al menos 8 caracteres, incluir mayusculas, minusculas, numeros y un caracter especial.";
         }
 
-        // Actualizar información
-         $query = "UPDATE usuario SET nombre = :nombre, password = :password WHERE id = :id";
+        
+        $query = "UPDATE usuario SET nombre = :nombre, password = :password WHERE id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':password', $password);
@@ -148,7 +148,7 @@ class User {
         try {
             $db = DB::getConnection();
 
-            // Actualizar el token y la fecha de expiración en la base de datos
+            
             $query = "UPDATE usuario SET token = :token, vencimiento_token = :vencimiento WHERE usuario = :usuario";
             $stmt = $db->prepare($query);
             $stmt->bindParam(':token', $token);

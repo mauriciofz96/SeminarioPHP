@@ -9,7 +9,7 @@ class DB {
 
     public static function getConnection() {
         if (!self::$connection) {
-            // Cargar configuración
+            
             $config = require __DIR__ . '/../config/config.php';
             
             $host = $config['db']['host'];

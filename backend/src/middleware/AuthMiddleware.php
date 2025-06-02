@@ -36,12 +36,11 @@ class AuthMiddleware
             $decoded = JWT::decode($token, new Key($this->jwtSecret, 'HS256'));
             error_log("TOKEN DECODED: " . print_r($decoded, true));
 
-            // Validación opcional de expiración (la mayoría de las libs ya la hacen)
+            
             if (isset($decoded->exp) && $decoded->exp < time()) {
                 return $this->unauthorizedResponse("El token ha expirado.");
             }
 
-            // Guardamos el usuario decodificado en el request
             $request = $request->withAttribute('usuario', $decoded);
             $request = $request->withAttribute('usuario_id', $decoded->sub);
 

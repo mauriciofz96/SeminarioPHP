@@ -17,7 +17,7 @@ class EstadisticaController {
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus($resultado['status']);
         } catch (\Exception $e) {
-            // Manejo de la excepción
+            
             $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
             return $response
                 ->withHeader('Content-Type', 'application/json')

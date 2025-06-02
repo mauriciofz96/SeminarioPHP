@@ -30,7 +30,7 @@ class UserController {
                 "exp" => $expiracion
             ];
 
-            // Usar sólo $_SERVER y validar
+            
             $jwt_secret = $_SERVER['JWT_SECRET'] ?? null;
 
             if (!$jwt_secret) {
@@ -41,7 +41,7 @@ class UserController {
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
             }
 
-            // chequear clave secreta
+            
             error_log("CLAVE USADA PARA FIRMAR TOKEN (desde login): " . $jwt_secret);
             error_log("Longitud: " . strlen($jwt_secret));
 
@@ -74,24 +74,24 @@ class UserController {
         return ['error' => $resultado, 'status' => ($resultado === 'El usuario ya está en uso.') ? 409 : 400];
     }
 
-    //funcion para mostrar informacion del usuario logeado
+    
     public static function obtenerInformacionUsuario($id,$token){
         try {
-            // Obtener la clave secreta
+            
             $jwt_secret = $_SERVER['JWT_SECRET'] ?? null;
             if (!$jwt_secret) {
                 throw new \Exception("JWT_SECRET no está configurado.");
             }
-            // Decodificar el token
+            
             $decoded = JWT::decode($token, new Key($jwt_secret, 'HS256'));
-            // Verificar si el id del token se coincide con el id solicitado
+            
              if (!isset($decoded->sub) || $decoded->sub != $id) {
                 return ['status' => 403, 'mensaje' => 'No tienes permiso para ver este usuario'];
              }
-            // Obtener la información del usuario con el nombre de usuario
+            
             $userInfo = User::obtenerInformacionPorUsuario($id);
     
-            // Verificar si se obtuvo la información del usuario
+            
             if ($userInfo) {
                 return ['status' => 200, 'data' => $userInfo];
             } else {
@@ -102,15 +102,15 @@ class UserController {
         }
     }
     
-    //funcion  para cambiar info de usuario
+    
     public static function actualizarInformacion($id, $data, $token) {
         try {
-             // Obtener la clave secreta
+            
             $jwt_secret = $_SERVER['JWT_SECRET'] ?? null;
             if (!$jwt_secret) {
                 throw new \Exception("JWT_SECRET no está configurado.");
             }
-            // Decodificar el token
+            
             $decoded = JWT::decode($token, new Key($jwt_secret, 'HS256'));
             if (!isset($decoded->sub) || $decoded->sub != $id) {
                 return ['status' => 403, 'mensaje' => 'No tienes permiso para ver este usuario'];
@@ -119,11 +119,11 @@ class UserController {
             if(!$usuario){
                 return ['status' => 404, 'mensaje' => 'Usuario no encontrado'];
             }
-            // Validar datos enviados
+            
             if (!isset($data['nombre'], $data['password'])) {
                 return ['status' => 400, 'mensaje' => 'Faltan datos obligatorios'];
             }
-            // Llamar al modelo para cambiar la información
+            
             $resultado = User::cambiarInfo($id, $data['nombre'], $data['password']);
             if ($resultado === true) {
                 return ['status' => 200, 'mensaje' => 'Información actualizada.'];

@@ -11,43 +11,39 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class MazoController {
 
     public static function crearMazo(Request $request, Response $response): Response {
-        // Obtener los datos del cuerpo de la solicitud
+       
         $datos = $request->getParsedBody();
 
-        // Extraer nombre del mazo e IDs de cartas
         $nombre = $datos['nombre'] ?? null;
         $ids_cartas = $datos['cartas'] ?? [];
 
-        // Obtener usuario_id desde el token (ya extraído por el middleware)
         $usuario = $request->getAttribute('usuario');
         $usuarioId = $usuario->sub;
 
 
-        // Validar los datos recibidos
         if (!$nombre || !is_array($ids_cartas)) {
             $response->getBody()->write(json_encode(['error' => 'Nombre del mazo y cartas son requeridos.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Validar cantidad de cartas
+
         if (count($ids_cartas) > 5) {
             $response->getBody()->write(json_encode(['error' => 'El mazo no puede tener más de 5 cartas.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Validar que las cartas sean únicas
         if (count(array_unique($ids_cartas)) !== count($ids_cartas)) {
             $response->getBody()->write(json_encode(['error' => 'Las cartas no deben repetirse.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Validar que las cartas existan en la base de datos
+        
         if (!Mazo::verificarCartasExistentes($ids_cartas)) {
             $response->getBody()->write(json_encode(['error' => 'Una o más cartas no existen.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Validar que el usuario no tenga más de 3 mazos
+        
         $cantidad = Mazo::contarMazosPorUsuario($usuarioId);
         if ($cantidad === false) {
             $response->getBody()->write(json_encode(['error' => 'Error al verificar los mazos del usuario.']));
@@ -59,7 +55,7 @@ class MazoController {
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Crear el mazo
+        
         error_log("Usuario ID usado para crear mazo: " . $usuarioId);
         $resultado = Mazo::crearMazo($usuarioId, $nombre, $ids_cartas);
         if ($resultado) {
@@ -71,7 +67,7 @@ class MazoController {
         }
     }
 
-    // Borrar mazo
+    
     public function borrarMazo(Request $request, Response $response, array $args): Response {
         $mazoId = $args['id'] ?? null;
     
@@ -100,15 +96,15 @@ class MazoController {
             return $response->withStatus(409)->withHeader('Content-Type', 'application/json');
         }
     
-        // Error interno
+        
         $response->getBody()->write(json_encode(['error' => 'Error interno al intentar borrar el mazo.']));
         return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
     }
     
-    // Obtener mazos de un usuario
+    
     public function obtenerMazos(Request $request, Response $response, array $args): Response {
         $usuarioIdParam = $args['id'] ?? null;
-        $usuarioIdToken = $request->getAttribute('usuario_id'); // Lo injecta el AuthMiddleware
+        $usuarioIdToken = $request->getAttribute('usuario_id'); 
     
         if (!$usuarioIdParam) {
             $response->getBody()->write(json_encode(['error' => 'ID de usuario requerido.']));
@@ -131,7 +127,7 @@ class MazoController {
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
 
-    // Cambiar nombre de mazo
+    
     public function cambiarNombreMazo(Request $request, Response $response, array $args): Response {
         $mazoId = $args['mazo'] ?? null;
         $nuevoNombre = $request->getParsedBody()['nombre'] ?? null;
@@ -140,7 +136,6 @@ class MazoController {
             $response->getBody()->write(json_encode(['error' => 'ID de mazo y nuevo nombre son requeridos.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
-    
         $usuario = $request->getAttribute('usuario');
         $usuarioId = $usuario->sub;
     

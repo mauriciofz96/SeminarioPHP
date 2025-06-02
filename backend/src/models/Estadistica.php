@@ -29,14 +29,14 @@ class Estadistica {
             $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
             if (!$resultados || count($resultados) === 0) {
-                // No se encontraron estadísticas
+                
                 return ['status' => 404, 'data' => ['error' => 'No se encontraron estadísticas']];
             }
     
             return ['status' => 200, 'data' => $resultados];
     
         } catch (\PDOException $e) {
-            // Lanza solo excepciones relacionadas con la base de datos
+            
             throw new \Exception("Error en la consulta: " . $e->getMessage());
         }
     }

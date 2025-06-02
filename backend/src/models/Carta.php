@@ -22,7 +22,7 @@ class Carta{
     
             if ($atributo !== null && $atributo !== '') {
                 $sql .= " AND a.nombre LIKE :atributo";  
-                $params[':atributo'] = '%' . $atributo . '%';  // Esto permite buscar por nombre parcialmente también
+                $params[':atributo'] = '%' . $atributo . '%';
             }
     
             if ($nombre !== null && $nombre !== '') {
@@ -45,7 +45,7 @@ class Carta{
         try {
             $db = DB::getConnection();
     
-            // 1. Buscar el mazo_id de esa partida y usuario
+            
             $stmt = $db->prepare("SELECT mazo_id FROM partida WHERE id = :partidaId AND usuario_id = :usuarioId");
             $stmt->execute([
                 ':partidaId' => $partidaId,
@@ -60,7 +60,7 @@ class Carta{
     
             $mazoId = $result['mazo_id'];
     
-            // 2. Buscar cartas en mano de ese mazo
+            
             $stmt = $db->prepare("
                 SELECT c.id, c.nombre, c.ataque, c.ataque_nombre, a.nombre AS atributo
                 FROM mazo_carta mc
@@ -80,7 +80,7 @@ class Carta{
         }
     }
 
-    //Obtengo los datos de una carta (se debe validar que esté en el mazo)
+    
     public static function obtenerDatos($carta_id,$mazo_id){
         try{
             $db=DB::getConnection();
@@ -95,7 +95,7 @@ class Carta{
                 return false;
             }
             
-            //obtengo el estado de la carta
+            
             $query="SELECT estado FROM mazo_carta WHERE mazo_id = :mazo_id AND carta_id = :carta_id";
             $stmt=$db->prepare($query);
             $stmt->bindParam(":carta_id",$carta_id);
@@ -106,7 +106,7 @@ class Carta{
                 error_log('Error en la obtencion del estado de la carta');
                 return false;
             }
-            //agrego el estado al resultado
+            
             $resultado['estado']=$estado;
             return $resultado;
             
@@ -117,10 +117,10 @@ class Carta{
         }
     }
 
-    //Devuelvo el atributo que tiene ventaja sobre el otro (sino devuelve null)
+    
     public static function atributoConVentaja($atributo_a, $atributo_b){
         try{
-            //obtengo los atributos a los que les gana el atributo_a
+            
             $db=DB::getConnection();
             $query="SELECT atributo_id2 FROM gana_a WHERE atributo_id = :atributo_id";
             $stmt=$db->prepare($query);
@@ -129,7 +129,7 @@ class Carta{
 
             $gana_a=$stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            //obtengo los atributos a los que les gana el atributo_b
+            
             $db=DB::getConnection();
             $query="SELECT atributo_id2 FROM gana_a WHERE atributo_id = :atributo_id";
             $stmt=$db->prepare($query);
@@ -139,9 +139,7 @@ class Carta{
             $gana_b=$stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-            //si el atributo_a gana al atributo_b, devuelve el atributo_a
-            //si el atributo_b gana al atributo_a, devuelve el atributo_b
-            //si ninguno gana, devuelve null;
+            
             $gana_a=array_column($gana_a, 'atributo_id2');
             $gana_b=array_column($gana_b, 'atributo_id2');
             if(in_array($atributo_b,$gana_a)) return $atributo_a;

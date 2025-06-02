@@ -27,7 +27,7 @@ class Partida {
                 $db->rollBack();
                 return false;
             }
-
+ 
             $partida_id = $db->lastInsertId();
 
             $actualizacion = Mazo::actualizarEstadoCartas($mazo_id);

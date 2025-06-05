@@ -133,7 +133,7 @@ $app->get('/cartas', CartaController::class . ':listarCartasPorFiltro');
 // ESTADISTICA
 
 $app->get('/estadisticas', \App\controllers\EstadisticaController::class . ':getEstadisticas');
-
+ 
 
 //PARTIDA
 

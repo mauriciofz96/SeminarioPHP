@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HeaderComponent from './components/HeaderComponent'
 import FooterComponent from './components/FooterComponent'
 import NavBarComponent from './components/NavBarComponent'
+import Estadisticas from './pages/stat/StatPage'
 import './App.css'
 
 function Home() {
@@ -25,9 +26,10 @@ function App() {
       <NavBarComponent isLoggedIn={isLoggedIn} userName={userName} />
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Estadisticas />} />
           <Route path="/register" element={<Registro />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/estadisticas" element={<Estadisticas />} />
           {/* Agrega más rutas según tu proyecto */}
         </Routes>
       </main>

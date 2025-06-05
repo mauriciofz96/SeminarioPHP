@@ -17,6 +17,7 @@ function NavBarComponent({ isLoggedIn, userName }) {
           <Link to="/logout">Logout</Link>
         </>
       )}
+      <Link to="/estadisticas">Estadísticas</Link>
     </nav>
   );
 }

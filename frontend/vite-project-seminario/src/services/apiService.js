@@ -19,5 +19,5 @@ export function registrarUsuario(data) {
 }
 
 export function postLogin(credentials){
-  return axios.post('http://localhost:80000/api/login', credentials)
+  return axios.post('/api/login', credentials)
 }

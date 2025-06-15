@@ -28,7 +28,7 @@ function LoginPage(){
             const data = await response.json(); // aca se deberia retornar token y username
             localStorage.setItem('token', data.token); // Guardar token en localStorage
             localStorage.setItem('username', data.username); // Guardar username en localStorage
-            alert('Login exitoso');// Redirigir a la pagina de estadisticas o donde sea necesario
+            alert('Login exitoso');
 
         } catch(error){
             setError('Error al iniciar sesión: ' + error.message);

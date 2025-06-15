@@ -1,16 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import '../assets/styles/HeaderComponent.css'
 
 function HeaderComponent() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
-    <header style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', padding: '1rem', background: '#eee' }}
-      onClick={() => navigate('/')}>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="Logo" style={{ height: 40, marginRight: 16 }} />
+    <header className="header" onClick={() => navigate('/')}>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="Logo" />
       <h1>Mi Página React</h1>
     </header>
-  );
+  )
 }
 
-export default HeaderComponent;
+export default HeaderComponent

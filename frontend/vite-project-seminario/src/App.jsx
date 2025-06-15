@@ -4,14 +4,20 @@ import HeaderComponent from './components/HeaderComponent'
 import FooterComponent from './components/FooterComponent'
 import NavBarComponent from './components/NavBarComponent'
 import Estadisticas from './pages/stat/StatPage'
+import RegistroPage from './pages/registro/RegistroPage'
+import RegistroExitoso from './pages/registro/RegistroExitoso'
+import RegistroFallido from './pages/registro/RegistroFallido'
 import './App.css'
 
 function Home() {
-  return <h2>Bienvenido a la página principal</h2>
+  return (
+    <div>
+      <h2>Bienvenido a la página principal</h2>
+      <Estadisticas />
+    </div>
+  )
 }
-function Registro() {
-  return <h2>Página de Registro</h2>
-}
+
 function Login() {
   return <h2>Página de Login</h2>
 }
@@ -26,11 +32,13 @@ function App() {
       <NavBarComponent isLoggedIn={isLoggedIn} userName={userName} />
       <main>
         <Routes>
-          <Route path="/" element={<Estadisticas />} />
-          <Route path="/register" element={<Registro />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
           <Route path="/estadisticas" element={<Estadisticas />} />
-          {/* Agrega más rutas según tu proyecto */}
+          <Route path="/register" element={<RegistroPage />} />
+          <Route path="/registro-exitoso" element={<RegistroExitoso />} />
+          <Route path="/registro-fallido" element={<RegistroFallido />} />
+          <Route path="/login" element={<Login />} />
+          {/* Agregá más rutas si es necesario */}
         </Routes>
       </main>
       <FooterComponent />

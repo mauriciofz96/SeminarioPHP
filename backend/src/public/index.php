@@ -143,6 +143,18 @@ $app->post('/partidas', \App\controllers\PartidaController::class . ':crearParti
 
 $app->post('/jugadas', \App\controllers\PartidaController::class . ':realizarJugada')->add(new AuthMiddleware($jwtSecret));
 
+//endpoint adicional para verificar si existe el usuario
+$app->get('/verificar-usuario/{usuario}', function (Request $request, Response $response, array $args) {
+    $usuario = $args['usuario'];
+    $existe = UserController::verificarExistenciaUsuario($usuario);
+
+    $response->getBody()->write(json_encode([
+        'disponible' => !$existe,
+        'mensaje' => $existe ? 'El usuario ya está en uso.' : 'El usuario está disponible.'
+    ]));
+
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+});
 
 
 $app->run();

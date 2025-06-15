@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // proxya TODO lo que empiece con /api al backend
+      // Redirige todas las peticiones que comienzan con /api al backend
       '/api': {
         target: 'http://localhost',
         changeOrigin: true,

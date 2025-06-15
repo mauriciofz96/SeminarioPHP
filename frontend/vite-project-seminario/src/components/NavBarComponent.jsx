@@ -1,9 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import '../assets/styles/NavBarComponent.css' 
+
+
 
 function NavBarComponent({ isLoggedIn, userName }) {
   return (
-    <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', background: '#ddd' }}>
+    <nav className="navbar">
       {!isLoggedIn ? (
         <>
           <Link to="/register">Registro de usuario</Link>

@@ -1,0 +1,20 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header img {
+  height: 48px;
+  margin-right: 16px;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}

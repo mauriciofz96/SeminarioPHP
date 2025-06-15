@@ -1,0 +1,39 @@
+.stats-container {
+  max-width: 900px;         /* Limita el ancho para centrar la tabla */
+  margin: 2rem auto;        /* Centra horizontalmente */
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stats-tabla {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
+}
+
+.stats-tabla th {
+  background-color: #e9f0ff;
+  color: #333;
+  font-weight: bold;
+}
+
+.stats-tabla td {
+  background-color: #fafafa;
+}
+
+.stats-fila-mejor {
+  background-color: #c8f7c5 !important;
+}
+
+.stats-controles {
+  margin-top: 2rem;
+  justify-content: space-between;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}

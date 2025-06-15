@@ -1,0 +1,16 @@
+.footer {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #182848, #4b6cb7); /* mismo estilo que el header pero en orden normal */
+  color: white;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
+  position: relative;
+  bottom: 0;
+  left: 0;
+}
+
+.footer p {
+  margin: 0;
+}

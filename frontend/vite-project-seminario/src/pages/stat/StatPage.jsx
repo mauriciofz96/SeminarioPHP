@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getEstadisticas } from '../../services/apiService'
+import { procesarEstadisticas } from '../../utils/procesarEstadisticas'
+import '../../assets/styles/StatPage.css'
 
 function StatPage() {
   const [usuarios, setUsuarios] = useState([])
@@ -12,31 +14,9 @@ function StatPage() {
     async function fetchStats() {
       try {
         const response = await getEstadisticas()
-        console.log('Respuesta completa de la API:', response)  // Log 1
-
         const body = response.data
-        console.log('body (ya es array de usuarios):', body)  // Log 2
 
-        const usuariosRaw = body // <--- corregido acá
-        console.log('Datos de usuarios recibidos:', usuariosRaw)  // Log 3
-
-        const dataProcesada = usuariosRaw.map(u => {
-          const ganadas = parseInt(u.ganadas, 10)
-          const empatadas = parseInt(u.empatadas, 10)
-          const perdidas = parseInt(u.perdidas, 10)
-          const jugadas = ganadas + empatadas + perdidas
-          return {
-            nombre: u.usuario,
-            partidasGanadas: ganadas,
-            partidasEmpatadas: empatadas,
-            partidasPerdidas: perdidas,
-            partidasJugadas: jugadas,
-            promedio: jugadas > 0 ? ganadas / jugadas : 0
-          }
-        })
-
-        console.log('Datos procesados para el estado:', dataProcesada)  // Log 4
-
+        const dataProcesada = procesarEstadisticas(body)
         setUsuarios(dataProcesada)
       } catch (error) {
         console.error('Error al obtener estadísticas:', error)
@@ -58,12 +38,15 @@ function StatPage() {
   )
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Estadísticas de Usuarios</h2>
-      <button onClick={() => setOrdenDescendente(!ordenDescendente)}>
+    <div className="stats-container">
+      <h2 className="stats-titulo">Estadísticas de Usuarios</h2>
+      <button
+        className="stats-boton-orden"
+        onClick={() => setOrdenDescendente(!ordenDescendente)}
+      >
         Ordenar por {ordenDescendente ? 'peor' : 'mejor'} performance
       </button>
-      <table border="1" cellPadding="8" style={{ width: '100%', marginTop: '1rem' }}>
+      <table className="stats-tabla">
         <thead>
           <tr>
             <th>Jugador</th>
@@ -78,7 +61,10 @@ function StatPage() {
           {usuariosPaginados.map((u, i) => {
             const esMejor = u.nombre === mejorJugador?.nombre
             return (
-              <tr key={i} style={{ backgroundColor: esMejor ? '#d4edda' : 'white', fontWeight: esMejor ? 'bold' : 'normal' }}>
+              <tr
+                key={i}
+                className={esMejor ? 'stats-fila-mejor' : ''}
+              >
                 <td>{u.nombre}</td>
                 <td>{u.partidasJugadas}</td>
                 <td>{u.partidasGanadas}</td>
@@ -90,11 +76,11 @@ function StatPage() {
           })}
         </tbody>
       </table>
-      <div style={{ marginTop: '1rem' }}>
+      <div className="stats-controles">
         <button onClick={() => setPagina(p => Math.max(1, p - 1))} disabled={pagina === 1}>
           Anterior
         </button>
-        <span style={{ margin: '0 1rem' }}>Página {pagina}</span>
+        <span>Página {pagina}</span>
         <button
           onClick={() => setPagina(p => p + 1)}
           disabled={pagina * porPagina >= usuarios.length}

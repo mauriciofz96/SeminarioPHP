@@ -167,4 +167,16 @@ class User {
             return "Error al guardar el token.";
         }
     }
+
+    public static function existeUsuario($usuario) {
+        try {
+            $db = DB::getConnection();
+            $stmt = $db->prepare("SELECT id FROM usuario WHERE usuario = :usuario");
+            $stmt->execute([':usuario' => $usuario]);
+            return $stmt->rowCount() > 0;
+        } catch (\PDOException $e) {
+            // Podés loguearlo o lanzar una excepción más específica
+            return false; // Por seguridad, en caso de error decimos que está disponible
+        }
+    }
 }

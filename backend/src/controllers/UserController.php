@@ -135,5 +135,8 @@ class UserController {
         }
     }
     
+    public static function verificarExistenciaUsuario($usuario) {
+        return \App\Models\User::existeUsuario($usuario);
+    }
 
 }

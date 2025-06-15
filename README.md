@@ -6,4 +6,4 @@ También se usó la librería Firebase, que debe instalarse con el comando compo
 Instalar ambos comandos desde la ruta del proyecto (por ejemplo desde C:\xampp\htdocs\ProyectoSeminario).
 
 - Frontend
-Para el registro de un nuevo usuario se creó un nuevo endpoint en el back con la lógica para chequear la existencia del nombre de usuario que se quiere crear.
+Para el registro de un nuevo usuario se creó un nuevo endpoint en el back con la lógica para chequear la existencia del nombre de usuario que se quiere crear. Este endpoint se creó porque, al tener que validar de manera independiente en el back y front los campos del formulario, se evidenció que no había un endpoint que específicamente chequeara si un usario dado ya está en la base de datos.

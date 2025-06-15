@@ -7,6 +7,7 @@ import Estadisticas from './pages/stat/StatPage'
 import RegistroPage from './pages/registro/RegistroPage'
 import RegistroExitoso from './pages/registro/RegistroExitoso'
 import RegistroFallido from './pages/registro/RegistroFallido'
+import Login from './pages/login/LoginPage';
 import './App.css'
 
 function Home() {
@@ -16,10 +17,6 @@ function Home() {
       <Estadisticas />
     </div>
   )
-}
-
-function Login() {
-  return <h2>Página de Login</h2>
 }
 
 function App() {

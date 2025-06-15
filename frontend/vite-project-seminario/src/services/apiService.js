@@ -17,3 +17,7 @@ export function verificarUsuarioDisponible(usuario) {
 export function registrarUsuario(data) {
   return axios.post('/api/registro', data)
 }
+
+export function postLogin(credentials){
+  return axios.post('http://localhost:80000/api/login', credentials)
+}

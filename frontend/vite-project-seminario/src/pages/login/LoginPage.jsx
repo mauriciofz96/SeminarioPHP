@@ -15,11 +15,7 @@ function LoginPage(){
 
         //Simulacion de peticion a API
         try {
-            const response = await fetch(postLogin,{
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario, contraseña }) // Envio de datos al servidor
-            });
+            const response = await postLogin({usuario, contraseña});
 
             if(!response.ok){
                 throw new Error('Credenciales incorrectas');

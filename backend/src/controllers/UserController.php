@@ -14,11 +14,10 @@ class UserController {
     public function login(Request $request, Response $response, array $args) {
         $data = $request->getParsedBody();
         
-        $nombre = $data['nombre'] ?? '';
         $usuario = $data['usuario'] ?? '';
         $password = $data['password'] ?? '';
 
-        $user = User::verificarCredenciales($nombre, $usuario, $password);
+        $user = User::verificarCredenciales($usuario, $password);
 
         if ($user) {
             $expiracion = time() + 3600;

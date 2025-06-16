@@ -34,7 +34,12 @@ function App() {
           <Route path="/register" element={<RegistroPage />} />
           <Route path="/registro-exitoso" element={<RegistroExitoso />} />
           <Route path="/registro-fallido" element={<RegistroFallido />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={
+            <Login 
+              setIsLoggedIn={setIsLoggedIn} 
+              setUserName={setUserName}
+              isLoggedIn={isLoggedIn}
+            />} />
           {/* Agregá más rutas si es necesario */}
         </Routes>
       </main>

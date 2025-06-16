@@ -1,12 +1,23 @@
-import React, { useState }  from "react";
+import { useNavigate } from "react-router-dom";
+import { useState }  from "react";
+import {useEffect} from "react";
 import { postLogin } from "../../services/apiService";
 
 
-function LoginPage(){
-    //Defino los estados para usuario, constraseña y error
+function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
+
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    const navigate=useNavigate();
+
+    useEffect(() => {
+        if(isLoggedIn){
+            alert('Ya estás logueado');
+            navigate('/');
+        }
+    }, [isLoggedIn, navigate]);
 
     //Funcion para manejar el envio (submit) del formulario
     const handleSubmit = async (e) => {
@@ -15,16 +26,26 @@ function LoginPage(){
 
         //Simulacion de peticion a API
         try {
-            const response = await postLogin({usuario, password});
+            if(isLoggedIn === true) { //revisar ESTO!!!
+                throw new error('Ya estás logueado');
+            }
+            const response = await postLogin({ usuario, password});
 
-            if(!response.ok){
+            const data=response.data;
+            if(!data.token || !data.nombre) {
                 throw new Error('Credenciales incorrectas');
             }
+            console.log("Respuesta del backend:", data);
 
-            const data = await response.json(); // aca se deberia retornar token y username
+             // aca se deberia retornar token y username
             localStorage.setItem('token', data.token); // Guardar token en localStorage
-            localStorage.setItem('username', data.username); // Guardar username en localStorage
+            localStorage.setItem('nombre', data.nombre); // Guardar username en localStorage
+            
+            //Esto todavia no lo hice andar
+            setIsLoggedIn(true); // Actualizar estado de inicio de sesión
+            setUserName(data.nombre); // Actualizar nombre de usuario
             alert('Login exitoso');
+            //
 
         } catch(error){
             setError('Error al iniciar sesión: ' + error.message);

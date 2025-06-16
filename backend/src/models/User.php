@@ -15,7 +15,7 @@ class User {
     }
 
     
-    public static function verificarCredenciales($nombre, $usuario, $password) {
+    public static function verificarCredenciales($usuario, $password) {
         try {
             $db = DB::getConnection();
             $query = "SELECT * FROM usuario WHERE usuario = :usuario";

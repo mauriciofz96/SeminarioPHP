@@ -1,8 +1,8 @@
+import '../../assets/styles/RegistroPage.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { validarRegistro } from '../../utils/validaciones'
 import { verificarUsuarioDisponible, registrarUsuario } from '../../services/apiService'
-import '../../assets/styles/RegistroPage.css'
 
 function RegistroPage() {
   const [formData, setFormData] = useState({

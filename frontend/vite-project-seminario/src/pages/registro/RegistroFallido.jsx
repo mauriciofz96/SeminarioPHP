@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom'
+import '../../assets/styles/RegistroPage.css'
 
 function RegistroFallido() {
   const location = useLocation()

@@ -40,6 +40,9 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
              // aca se deberia retornar token y username
             localStorage.setItem('token', data.token); // Guardar token en localStorage
             localStorage.setItem('nombre', data.nombre); // Guardar username en localStorage
+            localStorage.setItem('usuario', usuario); // Guardar usuario en localStorage
+            localStorage.setItem('id', data.id); // Guardar id en localStorage
+            setIsLoggedIn(true); // Actualizar estado de inicio de sesión
             
             //Esto todavia no lo hice andar
             setIsLoggedIn(true); // Actualizar estado de inicio de sesión
@@ -54,7 +57,7 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
 
 
     return(<form onSubmit={handleSubmit}> 
-        <h1> Iniciar Sesion</h1>
+        <h2> Iniciar Sesion</h2>
         <div>
           <label>Usuario:</label>
           <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} required/>

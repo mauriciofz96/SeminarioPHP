@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import HeaderComponent from './components/HeaderComponent'
 import FooterComponent from './components/FooterComponent'
 import NavBarComponent from './components/NavBarComponent'
@@ -7,7 +7,11 @@ import Estadisticas from './pages/stat/StatPage'
 import RegistroPage from './pages/registro/RegistroPage'
 import RegistroExitoso from './pages/registro/RegistroExitoso'
 import RegistroFallido from './pages/registro/RegistroFallido'
-import Login from './pages/login/LoginPage';
+import Login from './pages/login/LoginPage'
+import LogoutPage from './pages/logout/LogoutPage'
+import EditUserPage from './pages/edit/EditUserPage'
+import EdicionExitosaPage from './pages/edit/EdicionExitosaPage'
+
 import './App.css'
 
 function Home() {
@@ -20,8 +24,8 @@ function Home() {
 }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userName, setUserName] = useState('Jugador')
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'))
+  const [userName, setUserName] = useState(localStorage.getItem('nombre') || 'Jugador')
 
   return (
     <Router>
@@ -34,13 +38,34 @@ function App() {
           <Route path="/register" element={<RegistroPage />} />
           <Route path="/registro-exitoso" element={<RegistroExitoso />} />
           <Route path="/registro-fallido" element={<RegistroFallido />} />
-          <Route path="/login" element={
-            <Login 
-              setIsLoggedIn={setIsLoggedIn} 
-              setUserName={setUserName}
-              isLoggedIn={isLoggedIn}
-            />} />
-          {/* Agregá más rutas si es necesario */}
+
+          {/* Evitar acceso a /login si ya está logueado */}
+          <Route
+            path="/login"
+            element={
+              isLoggedIn
+                ? <Navigate to="/" replace />
+                : <Login setIsLoggedIn={setIsLoggedIn} setUserName={setUserName} isLoggedIn={isLoggedIn} />
+            }
+          />
+
+          <Route path="/logout" element={<LogoutPage setIsLoggedIn={setIsLoggedIn} />} />
+
+          {/* Ruta protegida: solo visible si está logueado */}
+          <Route
+            path="/editar-usuario"
+            element={
+              isLoggedIn
+                ? <EditUserPage />
+                : <Navigate to="/login" replace />
+            }
+          />
+
+          <Route path="/edicion-exitosa" element={
+            isLoggedIn
+              ? <EdicionExitosaPage />
+              : <Navigate to="/login" replace />
+          } />
         </Routes>
       </main>
       <FooterComponent />

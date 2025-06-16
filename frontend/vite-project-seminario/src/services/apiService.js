@@ -18,6 +18,16 @@ export function registrarUsuario(data) {
   return axios.post('/api/registro', data)
 }
 
+// iniciar sesion
 export function postLogin(credentials){
   return axios.post('/api/login', credentials)
+}
+
+// editar datos de un usuario logeado
+export function actualizarUsuario(usuario, datosActualizados, token) {
+  return axios.put(`/api/usuarios/${usuario}`, datosActualizados, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }

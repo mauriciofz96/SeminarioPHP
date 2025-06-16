@@ -1,30 +1,30 @@
-.registro-main {
+.edit-main {
   max-width: 400px;
   margin: 40px auto;
   font-family: Arial, sans-serif;
 }
  
-.registro-titulo {
+.edit-titulo {
   text-align: center;
   margin-bottom: 24px;
 }
  
-.registro-grupo {
+.edit-grupo {
   display: flex;
   margin-bottom: 16px;
   align-items: center;
 }
 
-.registro-grupo:last-of-type {
+.edit-grupo:last-of-type {
   margin-bottom: 24px;
 }
 
-.registro-label {
+.edit-label {
   width: 120px;
   font-weight: bold;
 }
 
-.registro-input {
+.edit-input {
   flex: 1;
   padding: 8px;
   font-size: 14px;
@@ -32,7 +32,7 @@
   border: 1px solid #ccc;
 }
 
-.registro-boton {
+.edit-boton {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -44,7 +44,7 @@
   transition: background-color 0.3s ease;
 }
 
-.registro-boton:disabled {
+.edit-boton:disabled {
   background-color: #aaa;
   cursor: not-allowed;
 }

@@ -14,16 +14,9 @@ class CartaController {
         $atributo = $params['atributo'] ?? null;
         $nombre = $params['nombre'] ?? null;
 
-        
-        if ($atributo === null && $nombre === null) {
-            $response->getBody()->write(json_encode(['error' => 'Faltan parámetros de búsqueda']));
-            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-        }
-
         $cartas = Carta::buscarCartas($atributo, $nombre);
 
         if (empty($cartas)) {
-            
             $response->getBody()->write(json_encode(['error' => 'No se encontraron cartas']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
@@ -31,6 +24,8 @@ class CartaController {
         $response->getBody()->write(json_encode($cartas));
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
+
+
 
     public function listarCartasEnMano(Request $request, Response $response, $args): Response {
         $usuarioPath = $args['usuario'];   

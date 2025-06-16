@@ -50,7 +50,11 @@ class UserController {
 
             User::guardarToken($usuario, $token, date('Y-m-d H:i:s', $expiracion));
 
-            $response->getBody()->write(json_encode(["token" => $token]));
+            $response->getBody()->write(json_encode([
+                "token" => $token,
+                "nombre" => $user['nombre'],
+                'id' => $user['id']
+            ]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
         } else {
             $response->getBody()->write(json_encode(["error" => "Credenciales incorrectas"]));

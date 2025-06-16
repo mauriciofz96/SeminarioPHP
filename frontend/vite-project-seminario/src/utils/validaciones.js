@@ -55,3 +55,24 @@ export function validarRegistro({ usuario, nombre, password }) {
 
   return todosLosErrores.length === 0 ? true : todosLosErrores.join(' ')
 }
+
+export function validarEdicionUsuario(nombre, password, repetirPassword) {
+  const errores = []
+
+  if (!nombre) {
+    errores.push('El nombre es obligatorio.')
+  } else if (nombre.length > 30) {
+    errores.push('El nombre no puede tener más de 30 caracteres.')
+  }
+
+  if (password || repetirPassword) {
+    const erroresPassword = validarPassword(password)
+    if (erroresPassword.length > 0) {
+      errores.push(...erroresPassword)
+    } else if (password !== repetirPassword) {
+      errores.push('Las contraseñas no coinciden.')
+    }
+  }
+
+  return errores
+}

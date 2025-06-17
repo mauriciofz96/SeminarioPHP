@@ -31,3 +31,12 @@ export function actualizarUsuario(usuario, datosActualizados, token) {
     }
   })
 }
+
+//editar nombre de mazo
+export function editarMazo(mazo, nombreNuevo,token){
+  return axios.put(`/api/mazos/${mazo}`,{nombre: nombreNuevo}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}

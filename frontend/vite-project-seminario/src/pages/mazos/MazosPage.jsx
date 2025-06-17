@@ -83,6 +83,7 @@ function MazosPage(){
                             setNuevoNombre={setNuevoNombre}
                             onGuardar={handleGuardar}
                             onCancel={() => setEditando(null)}
+                            onClick={(e) => e.stopPropagation()}
                             />
                         )}
 

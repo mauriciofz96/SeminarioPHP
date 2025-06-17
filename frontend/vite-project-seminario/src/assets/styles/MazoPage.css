@@ -1,0 +1,22 @@
+.mazo{
+  cursor: pointer;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.mazo.seleccionado{
+    background-color:#83a4bc;
+}
+
+.mazo-opciones{
+    display:flex;
+    gap:5px;
+    margin-left:10px;
+}
+
+.editar-form{
+    margin-left: 10px ;
+}

@@ -75,7 +75,6 @@ function App() {
               : <Navigate to="/login" replace />
           }/>
         </Routes>
-        </Routes>
       </main>
       <FooterComponent />
     </Router>

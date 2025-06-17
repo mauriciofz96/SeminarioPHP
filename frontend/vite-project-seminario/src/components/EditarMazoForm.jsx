@@ -1,7 +1,8 @@
 
-function EditarMazoForm({nuevoNombre, setNuevoNombre, onGuardar, onCancel}){
+function EditarMazoForm({nuevoNombre, setNuevoNombre, onGuardar, onCancel, onClick}){
     return (
         <form className="editar-form"
+            onClick={onClick}
             onSubmit={e=>{
             e.preventDefault();
             onGuardar();

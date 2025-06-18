@@ -130,6 +130,11 @@ $app->put('/mazos/{mazo}', MazoController::class . ':cambiarNombreMazo')->add(ne
 
 $app->get('/cartas', CartaController::class . ':listarCartasPorFiltro');
 
+//NUEVO
+$app->get('/mazos/{mazo}/cartas', MazoController::class . ':listarCartasEnMazo')->add(new AuthMiddleware($jwtSecret));
+
+
+
 // ESTADISTICA
  
 $app->get('/estadisticas', \App\controllers\EstadisticaController::class . ':getEstadisticas');

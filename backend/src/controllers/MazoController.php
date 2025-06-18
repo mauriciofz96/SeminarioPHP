@@ -154,6 +154,37 @@ class MazoController {
         $response->getBody()->write(json_encode(['mensaje' => 'Nombre del mazo cambiado exitosamente.']));
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
+
+    // NUEVO: obtener cartas por mazo($mazoId): devuelve las cartas con nombre, ataque, ataque_nombre y atributo
+    public function listarCartasEnMazo(Request $request,Response $response): Response {
+        $mazoId = $request->getAttribute('mazo');
+
+        if (!$mazoId) {
+            $response->getBody()->write(json_encode(['error' => 'ID de mazo requerido.']));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        $cartas = Mazo::obtenerCartasPorMazo($mazoId);
+
+        if ($cartas === false) {
+            $response->getBody()->write(json_encode(['error' => 'Error al obtener las cartas del mazo.']));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+
+        $cartasConDatos = [];
+        foreach($cartas as $cartaId){
+            $datosCarta = Carta::obtenerDatosParaMostrar($cartaId);
+            if ($datosCarta === false) {
+                $response->getBody()->write(json_encode(['error' => 'Error al obtener los datos de la carta.']));
+                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+            }
+            $datosCarta['id'] = $cartaId;
+            $cartasConDatos[$cartaId] = $datosCarta;
+        }
+
+        $response->getBody()->write(json_encode($cartasConDatos));
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+    }
     
     // 
 }

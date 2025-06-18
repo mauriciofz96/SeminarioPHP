@@ -153,8 +153,39 @@ class Carta{
             return false;
         }
     }
-    
-    
-    
-    
+
+  //NUEVO: obtener datos para mostrar. Devuelve los datos de la carta necesarios para el Ver Mazo
+    public static function obtenerDatosParaMostrar($carta_id){
+        try {
+            $db = DB::getConnection();
+            $query = "SELECT nombre, ataque, ataque_nombre, atributo_id FROM carta WHERE id = :carta_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":carta_id", $carta_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$resultado) {
+                error_log('Error en la obtencion de los datos de la carta');
+                return false;
+            }
+
+            $query="SELECT nombre FROM atributo WHERE id = :atributo_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":atributo_id", $resultado['atributo_id'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            $atributo = $stmt->fetchColumn();
+            if (!$atributo) {
+                error_log('Error en la obtencion del atributo de la carta');
+                return false;
+            }
+            $resultado['atributo'] = $atributo;
+            unset($resultado['atributo_id']); // Eliminamos el atributo_id para que no se muestre en el resultado final
+            return $resultado;
+
+        }catch(\PDOException $e){
+            error_log('Error en obtenerDatosParaMostrar:'. $e->getMessage());
+            return false;
+        }
+    }
 }

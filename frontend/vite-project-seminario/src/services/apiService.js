@@ -48,3 +48,12 @@ export function editarMazo(mazo, nombreNuevo,token){
     }
   })
 }
+
+//Obtener cartas de un mazo
+export function getCartasEnMazo(mazo,token) {
+  return axios.get(`/api/mazos/${mazo}/cartas`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}

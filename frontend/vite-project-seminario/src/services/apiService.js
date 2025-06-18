@@ -31,6 +31,14 @@ export function actualizarUsuario(usuario, datosActualizados, token) {
     }
   })
 }
+//obetener los mazos de un usuario
+export function getMazos(id, token) {
+  return axios.get(`/api/usuarios/${id}/mazos`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
 
 //editar nombre de mazo
 export function editarMazo(mazo, nombreNuevo,token){

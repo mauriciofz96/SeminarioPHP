@@ -1,8 +1,8 @@
 import '../../assets/styles/MazosPage.css';
 import EditarMazoForm from '../../components/EditarMazoForm';
+import VerMazoModal from '../../components/VerMazoModal';
 import {useEffect, useState} from 'react';
-import { getMazos } from "../../services/apiService";
-import { editarMazo } from '../../services/apiService';
+import { getMazos, editarMazo, getCartasEnMazo } from "../../services/apiService";
 import { useNavigate } from 'react-router-dom';
 
 function MazosPage(){
@@ -52,9 +52,21 @@ function MazosPage(){
         }
     }
     
-
-    const [cartas, setCartas] = useState([]);
+    const [mazoVisible, setMazoVisible] = useState(null);
+    const [cartas, setCartas] = useState(null);
+    const [cargandoCartas, setCargandoCartas] = useState(false);
     
+    const handleVerMazo = (mazo) => {
+     setMazoVisible(mazo);   // Abre el modal inmediatamente
+     setCartas(null);        // Limpia cartas
+     setCargandoCartas(true);
+     getCartasEnMazo(mazo.id, token)
+       .then(response => setCartas(response.data))
+       .catch(() => setCartas([]))
+       .finally(() => setCargandoCartas(false));
+    };
+
+  
 
     return(
         <div>
@@ -72,7 +84,7 @@ function MazosPage(){
                         <span >{mazo.nombre}</span>
                        {mazoSeleccionado ==mazo.id &&
                        <div className="mazo-opciones">
-                          <button>Ver Mazo</button>
+                          <button onClick={() =>handleVerMazo(mazo)}>Ver Mazo</button>
                           <button> Eliminar</button>
                           <button onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}> Editar</button>
                           <button> Jugar</button>
@@ -86,13 +98,25 @@ function MazosPage(){
                             onClick={(e) => e.stopPropagation()}
                             />
                         )}
-
+                    
                     </li>                 
                     ))
                 ): (
                     <p>No tienes mazos disponibles</p>
                 )}
             </ul>
+            {mazoVisible && (
+                            <VerMazoModal 
+                                mazo={mazoVisible}
+                                cartas={cartas}
+                                cargando={cargandoCartas}
+                                onClose={() => {
+                                  setMazoVisible(null);
+                                  setCartas(null);
+                                 }}
+                            />
+                        )}
+
             
         </div>
     );

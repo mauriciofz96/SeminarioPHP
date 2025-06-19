@@ -41,6 +41,14 @@
     box-shadow: 0 2px 16px rgba(0,0,0,0.2);
 }
 
+.cartas-lista{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
 .close-button{
     position:absolute;
     top:12px; right:12px; 

@@ -8,14 +8,19 @@ function VerMazoModal({mazo,cartas,cargando,onClose}){
                 <h2>{mazo.nombre}</h2>
                 <button className="close-button" onClick={onClose}>X</button>
                 {cargando || !cartas ?(<p>Cargando cartas...</p>):(
-                <ul>
+                <ul className="cartas-lista">
                         {cartasArray.map((carta) => (
-                            <li key={carta.id}>
-                                <span>{carta.nombre}</span>
-                                <span>{carta.atributo}</span>
-                                <span>{carta.ataque_nombre}</span>
-                                <span>{carta.ataque}</span>
-                            </li>
+                         <div className="carta" key={carta.id}>
+                             <img src={`/images/${carta.nombre.toLowerCase().replace(/\s+/g, '') + '.png'}`}
+                             alt={carta.nombre}
+                             className="carta-imagen" />
+                             <div className="carta-info">
+                                 <h4>{carta.nombre}</h4>
+                                 <p>Ataque: {carta.ataque}</p>
+                                 <p>Tipo: {carta.atributo}</p>
+                                 <p>Habilidad: {carta.ataque_nombre}</p>
+                             </div>
+                         </div>
                         ))}
                 </ul>
                 )}

@@ -16,6 +16,7 @@ function NavBarComponent({ isLoggedIn, userName }) {
         <>
           <span>Hola –{userName}–</span>
           <Link to="/mis-mazos">Mis mazos</Link>
+          <Link to="/crear-mazo">Crear mazo</Link>
           <Link to="/editar-usuario">Editar usuario</Link>
           <Link to="/logout">Logout</Link>
         </>

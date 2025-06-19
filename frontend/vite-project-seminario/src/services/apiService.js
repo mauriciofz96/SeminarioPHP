@@ -57,3 +57,26 @@ export function getCartasEnMazo(mazo,token) {
     }
   })
 }
+
+// Obtener cartas con filtro por atributo y/o nombre
+export function getCartas({ atributo = '', nombre = '' }) {
+  const params = new URLSearchParams();
+  if (atributo) params.append('atributo', atributo);
+  if (nombre) params.append('nombre', nombre);
+
+  return axios.get(`/api/cartas?${params.toString()}`);
+}
+
+
+// Crear un nuevo mazo
+export function crearMazo(nombre, cartas, token) {
+  return axios.post('/api/mazos', {
+    nombre,
+    cartas
+  }, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+

@@ -1,4 +1,4 @@
-import '../../assets/styles/MazosPage.css';
+import '../../assets/styles/MazoPage.css';
 import EditarMazoForm from '../../components/EditarMazoForm';
 import VerMazoModal from '../../components/VerMazoModal';
 import {useEffect, useState} from 'react';

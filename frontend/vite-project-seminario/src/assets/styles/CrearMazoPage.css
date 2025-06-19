@@ -1,0 +1,78 @@
+.crear-mazo-container {
+  padding: 20px;
+  max-width: 1000px; /* un poco más ancho para las cartas más grandes */
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.crear-mazo-container h2,
+.crear-mazo-container h3 {
+  margin-bottom: 10px;
+}
+
+.crear-mazo-container label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.crear-mazo-container input[type="text"],
+.crear-mazo-container select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filtros {
+  margin-top: 15px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filtros > div {
+  flex: 1 1 150px;
+}
+
+.limpiar-btn {
+  padding: 8px 16px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 36px;
+  align-self: flex-start;
+}
+
+.cartas-listado {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cartas por fila */
+  gap: 20px; /* espacio entre cartas */
+  justify-items: center; /* centra cada carta */
+}
+
+.crear-btn {
+  margin-top: 20px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.crear-btn:hover {
+  background-color: #0056b3;
+}
+
+.mensaje-error {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold;
+}

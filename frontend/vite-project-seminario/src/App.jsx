@@ -12,6 +12,7 @@ import LogoutPage from './pages/logout/LogoutPage'
 import EditUserPage from './pages/edit/EditUserPage'
 import EdicionExitosaPage from './pages/edit/EdicionExitosaPage'
 import MazosPage from './pages/mazos/MazosPage'
+import CrearMazoPage from './pages/mazos/CrearMazoPage';
 
 import './App.css'
 
@@ -68,12 +69,21 @@ function App() {
               : <Navigate to="/login" replace />
           } />
 
-           <Route 
+          <Route 
           path="/mis-mazos" element={
             isLoggedIn
               ? <MazosPage />
               : <Navigate to="/login" replace />
           }/>
+
+          <Route 
+            path="/crear-mazo" 
+            element={
+              isLoggedIn
+                ? <CrearMazoPage />
+                : <Navigate to="/login" replace />
+            }
+          />
         </Routes>
       </main>
       <FooterComponent />

@@ -1,4 +1,5 @@
 import '../../assets/styles/MazoPage.css';
+import '../../assets/styles/CartaComponent.css';
 import EditarMazoForm from '../../components/EditarMazoForm';
 import VerMazoModal from '../../components/VerMazoModal';
 import {useEffect, useState} from 'react';

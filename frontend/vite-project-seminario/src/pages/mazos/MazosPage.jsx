@@ -113,7 +113,7 @@ function MazosPage(){
                         <span className="font-bold text-lg text-red-700">{mazo.nombre}</span>
                        {mazoSeleccionado ==mazo.id &&
                        <div className="flex gap-2 mt-2">
-                          <button className="bg-blue-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-blue-700 hover:bg-blue-700 transition">Ver Mazo</button>
+                          <button className="bg-blue-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-blue-700 hover:bg-blue-700 transition" onClick={() =>handleVerMazo(mazo)}>Ver Mazo</button>
                           <button className="bg-red-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-red-700 hover:bg-red-700 transition" onClick={()=>handleEliminar(mazo)}>Eliminar</button>
                           <button className="bg-yellow-400 text-black px-3 py-1 rounded-lg font-bold border-2 border-yellow-700 hover:bg-yellow-500 transition" onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}>Editar</button>
                           <button className="bg-green-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-green-700 hover:bg-green-700 transition">Jugar</button>

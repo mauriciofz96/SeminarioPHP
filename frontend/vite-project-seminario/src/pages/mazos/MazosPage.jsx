@@ -1,7 +1,8 @@
 import EditarMazoForm from '../../components/EditarMazoForm';
 import VerMazoModal from '../../components/VerMazoModal';
+import ConfirmarModal from '../../components/ConfirmarModalComponent';
 import {useEffect, useState} from 'react';
-import { getMazos, editarMazo, getCartasEnMazo } from "../../services/apiService";
+import { getMazos, editarMazo, getCartasEnMazo, borrarMazo } from "../../services/apiService";
 import { useNavigate } from 'react-router-dom';
 
 function MazosPage(){
@@ -62,6 +63,40 @@ function MazosPage(){
        .finally(() => setCargandoCartas(false));
     };
 
+    
+    const [mazoAEliminar, setMazoAEliminar] = useState(null);
+    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+
+    const handleEliminar = (mazo) => {
+        // Si se confirma, establecer el mazo a eliminar
+        setMazoAEliminar(mazo);
+        setMostrarConfirmacion(true);
+    }
+
+    const confirmarEliminacion = async ()=>{
+        try{
+            console.log(`Eliminando mazo: ${mazoAEliminar.id}`);
+            const response = await borrarMazo(mazoAEliminar.id, token);
+            if(response.status === 200){
+                 console.log('Mazo eliminado correctamente');
+                 setMazoAEliminar(null);
+                 setMostrarConfirmacion(false);
+                 fetchMazos();
+                }
+        }catch(error){
+            console.error('Error al eliminar el mazo:', error);
+        }
+    }
+
+    const cancelarEliminacion = () => {
+        setMostrarConfirmacion(false);
+        setMazoAEliminar(null);
+        
+    }
+
+    
+
+    
     return(
         <div className="max-w-2xl mx-auto mt-10 bg-white rounded-xl shadow-2xl p-8 border-4 border-yellow-400">
             <h1 className="text-3xl font-extrabold text-center text-red-600 mb-6 drop-shadow-lg">Mazos disponibles</h1>
@@ -79,7 +114,7 @@ function MazosPage(){
                        {mazoSeleccionado ==mazo.id &&
                        <div className="flex gap-2 mt-2">
                           <button className="bg-blue-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-blue-700 hover:bg-blue-700 transition">Ver Mazo</button>
-                          <button className="bg-red-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-red-700 hover:bg-red-700 transition">Eliminar</button>
+                          <button className="bg-red-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-red-700 hover:bg-red-700 transition" onClick={()=>handleEliminar(mazo)}>Eliminar</button>
                           <button className="bg-yellow-400 text-black px-3 py-1 rounded-lg font-bold border-2 border-yellow-700 hover:bg-yellow-500 transition" onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}>Editar</button>
                           <button className="bg-green-500 text-white px-3 py-1 rounded-lg font-bold border-2 border-green-700 hover:bg-green-700 transition">Jugar</button>
                         </div>}
@@ -108,6 +143,13 @@ function MazosPage(){
                       setCartas(null);
                      }}
                 />
+            )}
+            {mostrarConfirmacion && (
+                <ConfirmarModal
+                    mensaje={`¿Estás seguro de que quieres eliminar el mazo "${mazoAEliminar.nombre}"?`}
+                    onConfirmar={confirmarEliminacion}
+                    onCancelar={cancelarEliminacion}
+                    />
             )}
         </div>
     );

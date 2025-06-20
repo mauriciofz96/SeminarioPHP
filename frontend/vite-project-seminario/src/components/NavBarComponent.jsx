@@ -15,7 +15,7 @@ function NavBarComponent({ isLoggedIn, userName }) {
           </>
         ) : (
           <>
-            <span className="text-lg font-bold text-black-800 mx-2">Hola – {userName}–</span>
+            <span className="text-lg font-bold text-black-800 mx-2">¡Hola, {userName}!</span>
             <Link to="/mis-mazos" className={linkClass}>Mis mazos</Link>
             <Link to="/crear-mazo" className={linkClass}>Crear mazo</Link>
             <Link to="/editar-usuario" className={linkClass}>Editar usuario</Link>

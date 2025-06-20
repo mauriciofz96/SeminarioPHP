@@ -69,7 +69,7 @@ const CrearMazoPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 bg-white rounded-xl shadow-2xl p-8 border-4 border-yellow-400">
+    <div className="max-w-4xl mx-auto mt-10 bg-white rounded-xl shadow-2xl p-8 border-4 border-yellow-400">
       <h2 className="text-3xl font-extrabold text-center text-red-600 mb-6 drop-shadow-lg">Crear Mazo</h2>
 
       <label htmlFor="nombre-mazo" className="block text-lg font-bold text-gray-700 mb-1">Nombre del mazo:</label>
@@ -120,7 +120,7 @@ const CrearMazoPage = () => {
       </div>
 
       <h3 className="text-xl font-bold text-yellow-700 mb-2">Seleccionar cartas (máx 5)</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
         {cartas.map((carta) => (
           <CartaComponent
             key={carta.id}

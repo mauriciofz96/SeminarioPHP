@@ -8,7 +8,7 @@ const CartaComponent = ({ carta, seleccionadas, toggleCarta }) => {
       <img
         src={`/images/${nombreImagen}`}
         alt={carta.nombre}
-        className="w-24 h-24 object-contain mb-2"
+        className="w-24 h-40 object-contain mb-2"
       />
       <div className="text-center">
         <h4 className="font-extrabold text-red-700">{carta.nombre}</h4>

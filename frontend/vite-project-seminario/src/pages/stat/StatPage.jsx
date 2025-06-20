@@ -39,12 +39,14 @@ function StatPage() {
   return (
     <div className="max-w-3xl mx-auto mt-10 bg-white rounded-xl shadow-2xl p-8 border-4 border-yellow-400">
       <h2 className="text-3xl font-extrabold text-center text-red-600 mb-6 drop-shadow-lg">Estadísticas de Usuarios</h2>
-      <button
-        className="bg-red-600 hover:bg-yellow-300 hover:text-red-700 text-white font-extrabold py-2 px-6 rounded-xl border-4 border-yellow-400 shadow-lg transition-all duration-200 transform hover:-translate-y-1 hover:scale-105 hover:animate-bounce mb-4"
-        onClick={() => setOrdenDescendente(!ordenDescendente)}
-      >
-        Ordenar por {ordenDescendente ? 'peor' : 'mejor'} performance
-      </button>
+      <div className="flex justify-center mb-4">
+        <button
+          className="bg-red-600 hover:bg-yellow-300 hover:text-red-700 text-white font-extrabold py-2 px-6 rounded-xl border-4 border-yellow-400 shadow-lg transition-all duration-200 transform hover:-translate-y-1 hover:scale-105 hover:animate-bounce"
+          onClick={() => setOrdenDescendente(!ordenDescendente)}
+        >
+          Ordenar por {ordenDescendente ? 'peor' : 'mejor'} performance
+        </button>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-yellow-50 rounded-lg shadow">
           <thead>

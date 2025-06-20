@@ -13,54 +13,57 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PartidaController{
 
-    public function crearPartida(Request $request, Response $response):Response{
+    public function crearPartida(Request $request, Response $response): Response {
 
         $data = $request->getParsedBody();
-
         $mazo_id = $data['mazo_id'] ?? null;
-        
-        
+
         if (!$mazo_id) {
             $response->getBody()->write(json_encode(['error' => 'Error: el id del mazo es obligatorio.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-
         $usuario_id = $request->getAttribute('usuario_id');
-        $mazos_usuario=Mazo::obtenerMazosPorUsuario((int)$usuario_id);
-        
-        
-        if($mazos_usuario === false){ 
+        $mazos_usuario = Mazo::obtenerMazosPorUsuario((int)$usuario_id);
+
+        if ($mazos_usuario === false) {
             $response->getBody()->write(json_encode(['error' => 'El usuario no posee mazos.']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
-        }else{
-            $mazos_ids=array_column($mazos_usuario, 'id');
-            if(!in_array($mazo_id, $mazos_ids)){ 
+        } else {
+            $mazos_ids = array_column($mazos_usuario, 'id');
+            if (!in_array($mazo_id, $mazos_ids)) {
                 $response->getBody()->write(json_encode(['error' => 'El mazo no pertenece al usuario.']));
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
         }
 
         $resultado = Partida::crearPartida($usuario_id, $mazo_id);
-        
-        if($resultado === false){
-            $response->getBody()->write(json_encode (['error' => 'Error al crear la partida.']));
-            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
-        }
-        else{
-            $cartas = Mazo::obtenerCartasPorMazo($mazo_id);
-            if($cartas === false){
-                $response->getBody()->write(json_encode(['error' => 'Error al obtener las cartas del mazo.']));
-                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
-            }
-            $response->getBody()->write(json_encode([
-                'partida_id' => $resultado['partida_id'],
-                'cartas' => $cartas
-            ]));
-            return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+
+        if (is_array($resultado) && isset($resultado['error'])) {
+            $response->getBody()->write(json_encode(['error' => $resultado['error']]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
+        if ($resultado === false) {
+            $response->getBody()->write(json_encode(['error' => 'Error al crear la partida.']));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+
+        $cartas = Mazo::obtenerCartasPorMazo($mazo_id);
+        if ($cartas === false) {
+            $response->getBody()->write(json_encode(['error' => 'Error al obtener las cartas del mazo.']));
+            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+        }
+
+        $response->getBody()->write(json_encode([
+            'partida_id' => $resultado['partida_id'],
+            'cartas' => $cartas
+        ]));
+
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
+
+// modificacion de crearPartida del PartidaController
 
     public function realizarJugada(Request $request, Response $response){
         

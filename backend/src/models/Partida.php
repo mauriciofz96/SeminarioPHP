@@ -11,7 +11,15 @@ use PDOException;
 class Partida {
     public static function crearPartida($usuario_id, $mazo_id){
         try{
-            $db= DB::getConnection();
+            $db = DB::getConnection();
+
+            // --- NUEVO: Verificar si ya hay una partida en curso
+            $stmt = $db->prepare("SELECT COUNT(*) FROM partida WHERE estado = 'en_curso'");
+            $stmt->execute();
+            if ($stmt->fetchColumn() > 0) {
+                return ['error' => 'Ya hay una partida en curso.'];
+            }
+
             $db->beginTransaction();
 
             $estado = 'en_curso';
@@ -19,7 +27,7 @@ class Partida {
             $stmt = $db->prepare("INSERT INTO partida (usuario_id, fecha, mazo_id, estado) VALUES(:usuario_id,:fecha,:mazo_id,:estado)");
             $stmt->bindParam(":usuario_id", $usuario_id, PDO::PARAM_INT);
             $stmt->bindParam(":fecha", $fecha);
-            $stmt->bindParam(":mazo_id",$mazo_id, PDO::PARAM_INT);
+            $stmt->bindParam(":mazo_id", $mazo_id, PDO::PARAM_INT);
             $stmt->bindParam(":estado", $estado);
 
             if(!$stmt->execute()){
@@ -27,26 +35,24 @@ class Partida {
                 $db->rollBack();
                 return false;
             }
- 
+    
             $partida_id = $db->lastInsertId();
 
-            $actualizacion = Mazo::actualizarEstadoCartas($mazo_id);
-            if(!$actualizacion){
-                error_log("Error al actualizar el estado de las cartas del mazo: " . $mazo_id);
-                $db->rollBack();
-            }
+            // Actualizar cartas del mazo del usuario y del servidor a 'en_mano'
+            $db->prepare("UPDATE mazo_carta SET estado = 'en_mano' WHERE mazo_id = :mazo_id")
+                ->execute([':mazo_id' => $mazo_id]);
+            $db->prepare("UPDATE mazo_carta SET estado = 'en_mano' WHERE mazo_id = 1")
+                ->execute();
 
             $db->commit();
             return ['partida_id' => $partida_id];
 
+        } catch (\PDOException $e) {
+            error_log('Error al crear la partida: '. $e->getMessage());
+            return false;
         }
-        catch (\PDOException $e){
-          error_log('Error al crear la partida: '. $e->getMessage());
-          return false;
-        }
-
-
     }
+// modificacion de crearPartida de Partida.php
 
 
     //JUGADA SERVIDOR

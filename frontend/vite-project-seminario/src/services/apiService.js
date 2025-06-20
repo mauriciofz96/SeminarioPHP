@@ -80,3 +80,12 @@ export function crearMazo(nombre, cartas, token) {
   });
 }
 
+export function borrarMazo(mazo, token){
+  return axios.delete(`/api/mazos/${mazo}`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+  )
+}
+

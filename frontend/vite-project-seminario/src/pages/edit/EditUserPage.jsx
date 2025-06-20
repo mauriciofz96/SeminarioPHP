@@ -1,4 +1,3 @@
-import '../../assets/styles/RegistroPage.css'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { validarEdicionUsuario } from '../../utils/validaciones'

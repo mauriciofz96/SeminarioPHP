@@ -15,9 +15,11 @@
     display:flex;
     gap:5px;
     margin-left:10px;
+    justify-content:center;
 }
 
 .editar-form{
+    gap:5px;
     margin-left: 10px ;
 }
 
@@ -64,3 +66,4 @@
     align-items: center;
     justify-content: center;
 }
+

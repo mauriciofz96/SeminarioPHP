@@ -159,6 +159,7 @@ class MazoController {
     // NUEVO: obtener cartas por mazo($mazoId): devuelve las cartas con nombre, ataque, ataque_nombre y atributo
     public function listarCartasEnMazo(Request $request,Response $response): Response {
         $mazoId = $request->getAttribute('mazo');
+        error_log("ID de mazo recibido: " . $mazoId);
 
         if (!$mazoId) {
             $response->getBody()->write(json_encode(['error' => 'ID de mazo requerido.']));
@@ -171,6 +172,8 @@ class MazoController {
             $response->getBody()->write(json_encode(['error' => 'Error al obtener las cartas del mazo.']));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
+
+        error_log("IDs de cartas para mazo $mazoId: " . print_r($cartas, true));
 
         $cartasConDatos = [];
         foreach($cartas as $cartaId){

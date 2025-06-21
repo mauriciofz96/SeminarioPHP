@@ -15,11 +15,11 @@ import MazosPage from './pages/mazos/MazosPage'
 import CrearMazoPage from './pages/mazos/CrearMazoPage';
 
 import './App.css'
- 
+
 function Home() {
   return (
     <div>
-      {/* <h2 className="text-center">Bienvenido a la página principal</h2> */}
+      <h2>Bienvenido a la página principal</h2>
       <Estadisticas />
     </div>
   )

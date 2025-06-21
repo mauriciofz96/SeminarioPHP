@@ -1,26 +1,27 @@
 import React from 'react'
+import '../assets/styles/CartaComponent.css'
 
 const CartaComponent = ({ carta, seleccionadas, toggleCarta }) => {
+  // Asumiendo que la imagen se llama igual que el nombre en minúsculas y sin espacios
   const nombreImagen = carta.nombre.toLowerCase().replace(/\s+/g, '') + '.png'
 
   return (
-    <div className={`rounded-xl border-4 border-yellow-400 shadow-lg p-4 flex flex-col items-center bg-white transition-all duration-200 ${seleccionadas.includes(carta.id) ? 'bg-yellow-100 scale-105' : 'hover:bg-yellow-50'}`}>
+    <div className="carta">
       <img
         src={`/images/${nombreImagen}`}
         alt={carta.nombre}
-        className="w-24 h-40 object-contain mb-2"
+        className="carta-imagen"
       />
-      <div className="text-center">
-        <h4 className="font-extrabold text-red-700">{carta.nombre}</h4>
-        <p className="font-semibold">Ataque: <span className="text-red-600">{carta.ataque}</span></p>
-        <p className="font-semibold">Tipo: <span className="text-yellow-700">{carta.atributo}</span></p>
-        <p className="font-semibold">Habilidad: <span className="text-blue-700">{carta.ataque_nombre}</span></p>
+      <div className="carta-info">
+        <h4>{carta.nombre}</h4>
+        <p>Ataque: {carta.ataque}</p>
+        <p>Tipo: {carta.atributo}</p>
+        <p>Habilidad: {carta.ataque_nombre}</p>
       </div>
       <input
         type="checkbox"
         checked={seleccionadas.includes(carta.id)}
         onChange={() => toggleCarta(carta.id)}
-        className="mt-2 w-5 h-5 accent-red-600"
       />
     </div>
   )

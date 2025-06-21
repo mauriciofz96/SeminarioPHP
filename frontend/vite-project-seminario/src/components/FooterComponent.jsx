@@ -1,9 +1,10 @@
 import React from 'react';
+import '../assets/styles/FooterComponent.css' 
 
 function FooterComponent() {
   return (
-    <footer className="bg-gray-100 text-center py-4 text-sm text-gray-600 mt-10">
-     Integrantes: Flammini Zuccheri Mauricio, Martín Franco, Rodrigues Neves Hernan © 2025
+    <footer style={{ textAlign: 'center', padding: '1rem', background: '#eee', marginTop: '2rem' }}>
+      Integrantes: Flammini Zuccheri Mauricio,Martin Franco,Rodrigues Neves Hernan &copy; 2025
     </footer>
   );
 }

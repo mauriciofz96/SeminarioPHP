@@ -36,7 +36,7 @@ class Carta{
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             error_log("Error en buscarCartas: " . $e->getMessage());
             return [];
         }
@@ -76,28 +76,16 @@ class Carta{
     
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             error_log("Error en obtenerCartasEnManoPorUsuarioYPartida: " . $e->getMessage());
             return [];
         }
     }
 
     
-    public static function obtenerDatos($carta_id,$mazo_id){
+    public static function obtenerEstado($carta_id,$mazo_id){
         try{
             $db=DB::getConnection();
-            $query="SELECT id, ataque, atributo_id FROM carta WHERE id = :carta_id";
-            $stmt=$db->prepare($query);
-            $stmt->bindParam(":carta_id",$carta_id);
-            $stmt->execute();
-            $resultado=$stmt->fetch(PDO::FETCH_ASSOC);
-
-            if(!$resultado){
-                error_log('Error en la obtencion de la carta');
-                return false;
-            }
-            
-            
             $query="SELECT estado FROM mazo_carta WHERE mazo_id = :mazo_id AND carta_id = :carta_id";
             $stmt=$db->prepare($query);
             $stmt->bindParam(":carta_id",$carta_id);
@@ -109,11 +97,11 @@ class Carta{
                 return false;
             }
             
-            $resultado['estado']=$estado;
+            $resultado=$estado;
             return $resultado;
             
 
-        }catch(PDOException $e){
+        }catch(\PDOException $e){
             error_log('Error en obtenerDatosCarta'. $e->getMessage());
             return false;
         }
@@ -148,13 +136,13 @@ class Carta{
             else if(in_array($atributo_a,$gana_b)) return $atributo_b;
             else return null;
 
-        }catch(PDOException $e){
+        }catch(\PDOException $e){
             error_log('Error en obtenerDatosCarta');
             return false;
         }
     }
 
-  //NUEVO: obtener datos para mostrar. Devuelve los datos de la carta necesarios para el Ver Mazo
+  //NUEVO: obtener datos para mostrar. Devuelve los datos de la carta 
     public static function obtenerDatosParaMostrar($carta_id){
         try {
             $db = DB::getConnection();
@@ -180,7 +168,7 @@ class Carta{
                 return false;
             }
             $resultado['atributo'] = $atributo;
-            unset($resultado['atributo_id']); // Eliminamos el atributo_id para que no se muestre en el resultado final
+           // Le paso el atributo_id por el endpoint  '/jugadas', por eso no lo saco. En el resto de paginas no voy a usarlo
             return $resultado;
 
         }catch(\PDOException $e){

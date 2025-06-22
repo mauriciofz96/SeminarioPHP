@@ -13,6 +13,7 @@ import EditUserPage from './pages/edit/EditUserPage'
 import EdicionExitosaPage from './pages/edit/EdicionExitosaPage'
 import MazosPage from './pages/mazos/MazosPage'
 import CrearMazoPage from './pages/mazos/CrearMazoPage';
+import PartidaPage from './pages/partida/PartidaPage'
 
 import './App.css'
 
@@ -82,6 +83,15 @@ function App() {
               isLoggedIn
                 ? <CrearMazoPage />
                 : <Navigate to="/login" replace />
+            }
+          />
+
+          <Route
+            path="/partida"
+            element={
+              isLoggedIn
+              ? <PartidaPage />
+              : <Navigate to="/login" replace/>
             }
           />
         </Routes>

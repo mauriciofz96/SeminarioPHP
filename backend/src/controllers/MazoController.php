@@ -175,15 +175,10 @@ class MazoController {
 
         error_log("IDs de cartas para mazo $mazoId: " . print_r($cartas, true));
 
-        $cartasConDatos = [];
-        foreach($cartas as $cartaId){
-            $datosCarta = Carta::obtenerDatosParaMostrar($cartaId);
-            if ($datosCarta === false) {
-                $response->getBody()->write(json_encode(['error' => 'Error al obtener los datos de la carta.']));
-                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
-            }
-            $datosCarta['id'] = $cartaId;
-            $cartasConDatos[$cartaId] = $datosCarta;
+        $cartasConDatos = Mazo::obtenerCartasConDatos($mazoId);
+        if($cartasConDatos === false){
+            $response->getBody()->write(json_encode(['error' => 'Error al obtener las cartas del mazo.']));
+            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
 
         $response->getBody()->write(json_encode($cartasConDatos));
@@ -192,3 +187,4 @@ class MazoController {
     
     // 
 }
+

@@ -1,0 +1,44 @@
+.tablero{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.casillero-carta{
+  width: 150px;     
+  height: 290px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #333;
+  border-radius: 10px;
+  background: #f8f8f8;
+}
+
+.carta.vacia {
+  color: #aaa;
+  font-style: italic;
+  border: none;
+  background: transparent;
+}
+
+.mazo-jugador {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.partida{
+    
+    color:#aaa
+    
+}
+
+.resultado{
+    white-space:pre-line;
+    gap:5px;
+    margin: 10px 
+}

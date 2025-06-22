@@ -49,6 +49,8 @@
     gap: 10px;
     list-style: none;
     padding: 0;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .close-button{

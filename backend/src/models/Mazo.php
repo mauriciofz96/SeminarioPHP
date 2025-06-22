@@ -217,6 +217,17 @@ class Mazo {
         }
     }
     
-    
+    public static function obtenerCartasConDatos($mazoId) {
+    $cartas = self::obtenerCartasPorMazo($mazoId);
+    if ($cartas === false) return false;
+    $cartasConDatos = [];
+    foreach($cartas as $cartaId){
+        $datosCarta = Carta::obtenerDatosParaMostrar($cartaId);
+        if ($datosCarta === false) return false;
+        $datosCarta['id'] = $cartaId;
+        $cartasConDatos[$cartaId] = $datosCarta;
+    }
+    return $cartasConDatos;
+}
 
 }

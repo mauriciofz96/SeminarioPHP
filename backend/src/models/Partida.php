@@ -160,11 +160,11 @@ class Partida {
     //Calculo el ganador, y segun el atributo que tenga ventaja, se le suma el 30% al ataque que corresponda
     private static function calcularGanadorJugada($carta_a,$carta_b){
         
-        $atributo_a=$carta_a['atributo'] ?? null;
+        $atributo_a=$carta_a['atributo_id'] ?? null;
         $ataque_a=$carta_a['ataque'] ?? null;
 
 
-        $atributo_b=$carta_b['atributo'] ?? null;
+        $atributo_b=$carta_b['atributo_id'] ?? null;
         $ataque_b=$carta_b['ataque'] ?? null;
 
         $atributo_ventaja=Carta::atributoConVentaja($atributo_a,$atributo_b);

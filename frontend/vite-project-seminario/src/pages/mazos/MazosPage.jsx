@@ -4,8 +4,8 @@ import EditarMazoForm from '../../components/EditarMazoForm';
 import MazoModalComponent from '../../components/MazoModalComponent';
 import ConfirmarModal from '../../components/ConfirmarModalComponent';
 import {useEffect, useState} from 'react';
-import { getMazos, editarMazo, getCartasEnMazo, borrarMazo } from "../../services/apiService";
-import { useNavigate } from 'react-router-dom';
+import { getMazos, editarMazo, getCartasEnMazo, borrarMazo, crearPartida } from "../../services/apiService";
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function MazosPage(){
     const navigate = useNavigate();
@@ -100,7 +100,43 @@ function MazosPage(){
     }
         
 
-  
+    //NUEVO: jugar partida
+  const [mazoJugando,setMazoJugando]=useState(null);
+  const [mensaje, setMensaje] = useState('');
+
+  const handleJugar = async (mazo) => {
+    if (mazoJugando){
+          setMensaje('Error: no puede usarse un mazo cuando una partida está en curso')
+        }
+    setMazoJugando(mazo);
+    try{
+        const response = await crearPartida(mazo.id,token);
+        if (response.status === 200){
+            console.log("Partida creada exitosamente");
+            const cartas = response.data.cartas;
+            const partidaId = response.data.partida_id;
+
+            navigate('/partida',{
+                state:{
+                    mazo,
+                    cartas,
+                    partidaId
+                }
+            });
+         }
+    }catch(error){
+      console.error('Error al crear la partida');
+      setMazoJugando(null);
+    }
+  }
+
+  const location = useLocation();
+  useEffect(() =>{
+    if(location.state && location.state.finalizarPartida){
+        setMazoJugando(null);
+    }
+  },[location.state])
+
 
     return(
         <div>
@@ -121,7 +157,7 @@ function MazosPage(){
                           <button onClick={() =>handleVerMazo(mazo)}>Ver Mazo</button>
                           <button onClick={()=>handleEliminar(mazo)}> Eliminar</button>
                           <button onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}> Editar</button>
-                          <button> Jugar</button>
+                          <button onClick={()=>handleJugar(mazo)}> Jugar</button>
                         </div>}
                         {editando === mazo.id &&(
                             <EditarMazoForm
@@ -132,7 +168,7 @@ function MazosPage(){
                             onClick={(e) => e.stopPropagation()}
                             />
                         )}
-                    
+                    {mensaje && <p className="mensaje-error"> {mensaje} </p>}
                     </li>                 
                     ))
                 ): (

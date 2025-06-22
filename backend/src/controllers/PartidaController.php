@@ -49,15 +49,16 @@ class PartidaController{
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
 
-        $cartas = Mazo::obtenerCartasPorMazo($mazo_id);
-        if ($cartas === false) {
+        $cartasConDatos = Mazo::obtenerCartasConDatos($mazo_id);
+        
+        if ($cartasConDatos === false) {
             $response->getBody()->write(json_encode(['error' => 'Error al obtener las cartas del mazo.']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
-
+        
         $response->getBody()->write(json_encode([
             'partida_id' => $resultado['partida_id'],
-            'cartas' => $cartas
+            'cartas' => $cartasConDatos
         ]));
 
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
@@ -91,10 +92,10 @@ class PartidaController{
             return $response->withStatus(404)->withHeader('Content-Type','application/json');
         }
         
-        $carta_a=Carta::obtenerDatos($carta_id_a,$mazo_id);
+        $carta_a=Carta::obtenerDatosParaMostrar($carta_id_a);
 
         
-        $estado_carta_a=$carta_a["estado"] ?? null;
+        $estado_carta_a=Carta::obtenerEstado($carta_id_a,$mazo_id);
         if(!$carta_a || ($estado_carta_a !== "en_mano")){
             error_log("Estado de la carta_a: $estado_carta_a");
             $response->getBody()->write(json_encode(['error'=>'Carta no disponible']));
@@ -104,7 +105,7 @@ class PartidaController{
         
 
         $carta_id_b=Partida::jugadaServidor();
-        $carta_b=Carta::obtenerDatos($carta_id_b,1); 
+        $carta_b=Carta::obtenerDatosParaMostrar($carta_id_b); 
         if(!$carta_b){
             $response->getBody()->write(json_encode(['error'=>'No se pudo obtener la carta del servidor']));
             return $response->withStatus(400)->withHeader('Content-Type','application/json');
@@ -123,7 +124,8 @@ class PartidaController{
         $respuesta = [
             'carta jugada por el servidor' => $carta_b,
             'fuerza carta a' => $datos_jugada['fuerza_a'],
-            'fuerza carta b'=> $datos_jugada['fuerza_b']
+            'fuerza carta b'=> $datos_jugada['fuerza_b'],
+            'Resultado:'=> $datos_jugada['el_usuario']
         ];
 
         
@@ -134,7 +136,7 @@ class PartidaController{
             
             $ganador=Partida::cerrarPartida($partida_id,$usuario);
             
-            $respuesta['El ganador es:'] = $ganador;
+            $respuesta['El ganador de la partida es:'] = $ganador;
         }
         
         $response->getBody()->write(json_encode($respuesta));

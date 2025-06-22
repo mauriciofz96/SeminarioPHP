@@ -89,3 +89,29 @@ export function borrarMazo(mazo, token){
   )
 }
 
+//NUEVO
+
+//crear partida
+export function crearPartida(mazo_id,token){
+  return axios.post(`/api/partidas`,{
+    mazo_id
+  },{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
+//jugada
+export function realizarJugada(token,carta_id,partida_id,usuario_id){
+  return axios.post(`/api/jugadas`,{
+    carta_id,
+    partida_id,
+    usuario_id,
+  },
+   { headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+

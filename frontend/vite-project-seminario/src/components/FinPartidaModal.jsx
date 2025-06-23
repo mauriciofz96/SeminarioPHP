@@ -1,10 +1,10 @@
 function FinPartida({ganador, mensaje, onNuevaPartida, onFinalizarPartida}){
     let textoFinal='';
-    if(ganador === 'gano'){
-        textoFinal='¡Has ganado!\n'+ mensaje;
-    } else if(ganador === 'perdio'){
+    if(ganador === 'Empate'){
+         textoFinal='Empate.\n' + mensaje;
+    } else if(ganador === 'Servidor'){
         textoFinal='Has perdido.\n' + mensaje;
-    } else{ textoFinal='Empate.\n' + mensaje;}
+    } else{textoFinal='¡Has ganado!\n'+ mensaje;}
     
 
     return (

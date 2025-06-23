@@ -4,7 +4,7 @@ namespace App\models;
 require_once __DIR__ . '/../models/DB.php';
 
 use PDO;
-
+ 
 use App\models\DB;
 use PDOException;
 
@@ -247,7 +247,7 @@ class Partida {
         }
 
     }
-
+ 
     
     private static function calcularGanadorPartida($resultado){
         $conteo=array_count_values($resultado); //cuento la cantidad de veces que aparecen los resultados: gano, perdio, empato
@@ -257,39 +257,52 @@ class Partida {
 
 
     //Finalizo la partida
-    public static function cerrarPartida($partida_id,$usuario){
-        try{
+    public static function cerrarPartida($partida_id, $usuario){
+        try {
+            $db = DB::getConnection();
 
-            $db=DB::getConnection();
-            $query="SELECT el_usuario FROM jugada WHERE partida_id = :partida_id";
-            $stmt=$db->prepare($query);
-            $stmt->bindParam(":partida_id",$partida_id);
+            // Obtener los resultados de la partida
+            $query = "SELECT el_usuario FROM jugada WHERE partida_id = :partida_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":partida_id", $partida_id);
             $stmt->execute();
 
-            $resultado=$stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-            $resultado_partida=self::calcularGanadorPartida($resultado);
-            
+            $resultado = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+            $resultado_partida = self::calcularGanadorPartida($resultado);
 
-            $query="UPDATE partida SET estado = :estado, el_usuario = :el_usuario WHERE id = :id";
-            $stmt=$db->prepare($query);
-            $stmt->bindParam(":id",$partida_id);
-            $stmt->bindParam(":el_usuario",$resultado_partida);
-            $estado='finalizada';
-            $stmt->bindParam(":estado",$estado);
-            
-            if(!$stmt->execute()){
+            // Actualizar estado de la partida
+            $query = "UPDATE partida SET estado = :estado, el_usuario = :el_usuario WHERE id = :id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(":id", $partida_id);
+            $stmt->bindParam(":el_usuario", $resultado_partida);
+            $estado = 'finalizada';
+            $stmt->bindParam(":estado", $estado);
+
+            if (!$stmt->execute()) {
                 error_log('No se pudo finalizar la partida');
                 return false;
             }
-            if($resultado_partida == "empato") $ganador="Empate";
-            else if($resultado_partida == "gano") $ganador=$usuario;
-            else if($resultado_partida == "perdio") $ganador="Servidor";
+
+            //Restaurar las cartas del servidor a 'en_mazo'
+            $updateServidor = $db->prepare("UPDATE mazo_carta SET estado = 'en_mazo' WHERE mazo_id = 1");
+            $updateServidor->execute();
+
+            // Determinar ganador
+            if ($resultado_partida === "empato") {
+                $ganador = "Empate";
+            } elseif ($resultado_partida === "gano") {
+                $ganador = $usuario;
+            } else {
+                $ganador = "Servidor";
+            }
+
             return $ganador;
 
-        }catch(PDOException $e){
-            error_log('Error en cerrarPartida'. $e->getMessage());
+        } catch (PDOException $e) {
+            error_log('Error en cerrarPartida: ' . $e->getMessage());
             return false;
         }
     }
+
 
 }

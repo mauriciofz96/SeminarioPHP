@@ -7,7 +7,7 @@ export default defineConfig({
     proxy: {
       // Redirige todas las peticiones que comienzan con /api al backend
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost',
         changeOrigin: true,
         secure: false,
         rewrite: path => path.replace(/^\/api/, ''), // si en backend no usan /api en la ruta

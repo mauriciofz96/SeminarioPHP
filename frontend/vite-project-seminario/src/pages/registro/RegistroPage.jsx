@@ -50,7 +50,7 @@ function RegistroPage() {
       setProcesando(false)
     }
   }
-
+ 
   return (
     <main className="registro-main">
       <h2 className="registro-titulo">Registro de Usuario</h2>

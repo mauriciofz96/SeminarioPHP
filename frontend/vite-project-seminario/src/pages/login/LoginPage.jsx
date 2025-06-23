@@ -1,3 +1,4 @@
+import '../../assets/styles/RegistroPage.css'
 import { useNavigate } from "react-router-dom";
 import { useState }  from "react";
 import {useEffect} from "react";
@@ -56,19 +57,45 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
     }
 
 
-    return(<form onSubmit={handleSubmit}> 
-        <h2> Iniciar Sesion</h2>
-        <div>
-          <label>Usuario:</label>
-          <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} required/>
-        </div>
-        <div>
-          <label>Contraseña</label>
-          <input type="password" value={password}  onChange={e => setPassword(e.target.value)} required/>
-        </div>
-        <button type="submit">Iniciar sesión</button>
-        {error && <p style={{ color: "red"}}>{error}</p>}
-    </form>);
+    return (
+        <main className="registro-main">
+            <h2 className="registro-titulo">Iniciar Sesión</h2>
+            <form onSubmit={handleSubmit}>
+            <div className="registro-grupo">
+                <label htmlFor="usuario" className="registro-label">Usuario:</label>
+                <input
+                id="usuario"
+                type="text"
+                name="usuario"
+                value={usuario}
+                onChange={e => setUsuario(e.target.value)}
+                required
+                className="registro-input"
+                />
+            </div>
+
+            <div className="registro-grupo">
+                <label htmlFor="password" className="registro-label">Contraseña:</label>
+                <input
+                id="password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                className="registro-input"
+                />
+            </div>
+
+            <button type="submit" className="registro-boton">
+                Iniciar sesión
+            </button>
+
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            </form>
+        </main>
+    )
+
 }
 
 export default LoginPage;

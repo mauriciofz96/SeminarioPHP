@@ -37,15 +37,18 @@
 .filtros > div {
   flex: 1 1 150px;
 }
-
+ 
 .limpiar-btn {
   padding: 8px 16px;
-  background-color: #eee;
+  background-color:  #2f2f2f;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
   height: 36px;
   align-self: flex-start;
+}
+.limpiar-btn:hover {
+  background-color: #aa0000;
 }
 
 .cartas-listado {

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, #4b6cb7, #182848);
+  background: linear-gradient(40deg,#b91818, #e85b14);
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   cursor: pointer;
@@ -15,6 +15,7 @@
 }
 
 .header h1 {
+  
   font-size: 1.8rem;
   margin: 0;
 }

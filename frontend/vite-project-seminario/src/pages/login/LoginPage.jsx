@@ -87,7 +87,7 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
                 />
             </div>
 
-            <button type="submit" className="registro-boton">
+            <button type="submit">
                 Iniciar sesión
             </button>
 

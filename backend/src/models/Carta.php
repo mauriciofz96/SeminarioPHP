@@ -47,20 +47,23 @@ class Carta{
         try {
             $db = DB::getConnection();
     
-            
-            $stmt = $db->prepare("SELECT mazo_id FROM partida WHERE id = :partidaId AND usuario_id = :usuarioId");
-            $stmt->execute([
-                ':partidaId' => $partidaId,
-                ':usuarioId' => $usuarioId
-            ]);
+            if($usuarioId != 1){
+              $stmt = $db->prepare("SELECT mazo_id FROM partida WHERE id = :partidaId AND usuario_id = :usuarioId");
+              $stmt->execute([
+                  ':partidaId' => $partidaId,
+                  ':usuarioId' => $usuarioId
+              ]);
     
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+              $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
-            if (!$result) {
-                return []; // No se encontró la partida para ese usuario
+              if (!$result) {
+                  return []; // No se encontró la partida para ese usuario
+              }
+    
+              $mazoId = $result['mazo_id'];
+            }else{
+                $mazoId = 1;
             }
-    
-            $mazoId = $result['mazo_id'];
     
             
             $stmt = $db->prepare("

@@ -24,7 +24,7 @@
   background: transparent;
 }
 
-.mazo-jugador {
+.mazo-jugando{
   display: flex;
   gap: 1rem;
   margin-top: 2rem;

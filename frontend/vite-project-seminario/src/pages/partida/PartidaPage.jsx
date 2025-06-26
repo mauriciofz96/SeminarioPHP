@@ -56,39 +56,45 @@ function PartidaPage(){
 
     
 
-    const handleDrop = async (e) => {
-        if (resultadoJugada) return;
+  
+const handleDrop = async (e) => {
+  if (resultadoJugada) return;
 
-     const cartaId = e.dataTransfer.getData("cartaId");
-     const cartaSeleccionada = cartasMano.find(c => c.id === parseInt(cartaId));
-     if (cartaSeleccionada && !tablero[1] && !esperandoJugada) {
-        setEsperandoJugada(true);
+  const cartaId = e.dataTransfer.getData("cartaId");
+  const cartaSeleccionada = cartasMano.find(c => c.id === parseInt(cartaId));
+  
+  if (cartaSeleccionada && !tablero[1] && !esperandoJugada) {
+    setEsperandoJugada(true);
+    setTablero([null, cartaSeleccionada]);
+    setCartasMano(cartasMano.filter(c => c.id !== cartaSeleccionada.id));
+    
+    try {
+      const response = await realizarJugada(token, cartaId, partidaId, usuarioId);
+      if (response.status === 200) {
+        const cartaServidorJugada = response.data['carta jugada por el servidor'];
 
-        // 1. Primero, muestra la carta del usuario
-        setTablero([null, cartaSeleccionada]);
-        setCartasMano(cartasMano.filter(c => c.id !== cartaSeleccionada.id));
+        setTablero([cartaServidorJugada, cartaSeleccionada]);
+        setCartasServidor(prevCartasServidor =>
+          prevCartasServidor
+            ? prevCartasServidor.filter(c => Number(c.id) !== Number(cartaServidorJugada.id))
+            : []
+        );
 
-        try {
-            // 2. Luego, espera la respuesta y muestra la carta del servidor
-            const response = await realizarJugada(token, cartaId, partidaId, usuarioId);
-            if (response.status === 200) {
-                
-                setTablero([ response.data['carta jugada por el servidor'], cartaSeleccionada ]);
-                setCartasServidor(cartasServidor.filter(c => c.id !== response.data['carta jugada por el servidor'].id));
-                setResultadoJugada(response.data['Resultado:']);
-                if (response.data['El ganador de la partida es:']) {
-                    
-                    setGanador(response.data['El ganador de la partida es:']);
-                }
-            }
-         }catch(error){
-            console.error('Hubo un error al realizar la jugada');
-            setResultadoJugada('Error');
-         }
-         setEsperandoJugada(false);
-         
-         }
+        console.log("Cartas servidor después de jugar:", cartasServidor);
+
+        setResultadoJugada(response.data['Resultado:']);
+        if (response.data['El ganador de la partida es:']) {
+          setGanador(response.data['El ganador de la partida es:']);
+        }
+      }
+    } catch (error) {
+      console.error('Hubo un error al realizar la jugada');
+      setResultadoJugada('Error');
     }
+
+    setEsperandoJugada(false);
+  }
+}
 
 
     function mensajeResultado(resultado){

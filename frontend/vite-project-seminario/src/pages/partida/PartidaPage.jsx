@@ -104,7 +104,7 @@ function PartidaPage(){
     
     const finalizarPartida = () => {
         //devolver a en_mazo el estado de todas las cartas del mazo utilizado
-        navigate('/mis-mazos', {state: {finalizarPartida: true}});
+        navigate('/', {state: {finalizarPartida: true}});
     }
 
     const nuevaPartida = async () => {

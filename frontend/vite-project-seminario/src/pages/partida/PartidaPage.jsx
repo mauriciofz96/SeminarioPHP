@@ -4,18 +4,44 @@ import '../../assets/styles/CartaComponent.css'
 
 import {useEffect, useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { realizarJugada} from '../../services/apiService'
+import { realizarJugada, listarCartasEnMano} from '../../services/apiService'
 import FinPartida from '../../components/FinPartidaModal'
 
 function PartidaPage(){
     const location = useLocation();
     const navigate = useNavigate();
-    const {mazo, cartas, partidaId} =location.state || {};
-    const [cartasMano, setCartasMano] = useState(Array.isArray(cartas) ? cartas : Object.values(cartas || {}));
+    const token = localStorage.getItem('token');
+    const usuarioId = localStorage.getItem('id');
+    const {partidaId} =location.state || {};
+    const [cartasMano, setCartasMano] = useState(null);
+    const [cartasServidor, setCartasServidor] = useState(null);
+
+    //nuev funcion obtener cartas para usuario y servidor
+    async function actualizarCartasEnJuego() {
+    try {
+        // Cartas del usuario
+        const responseUsuario = await listarCartasEnMano(usuarioId,partidaId,token);
+        if (responseUsuario.status === 200) {
+            setCartasMano(responseUsuario.data);
+        }
+        // Cartas del servidor (id = 1)
+        const responseServidor = await listarCartasEnMano(1, partidaId,token);
+        if (responseServidor.status === 200) {
+            setCartasServidor(responseServidor.data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+    
+    useEffect(()=>{
+        actualizarCartasEnJuego();
+    },[usuarioId,token])
+
 
     useEffect(() => {
-     if (!mazo || !cartasMano || !partidaId) {
-          navigate('/mis-mazos');
+     if (!usuarioId || !token) {
+          navigate('/login');
          }
     }, []);
 
@@ -27,18 +53,15 @@ function PartidaPage(){
 
     const [resultadoJugada, setResultadoJugada] = useState(null);
 
-    const usuarioId = localStorage.getItem('id');
-
-    const token = localStorage.getItem('token');
 
     
 
     const handleDrop = async (e) => {
         if (resultadoJugada) return;
 
-    const cartaId = e.dataTransfer.getData("cartaId");
-    const cartaSeleccionada = cartasMano.find(c => c.id === parseInt(cartaId));
-    if (cartaSeleccionada && !tablero[1] && !esperandoJugada) {
+     const cartaId = e.dataTransfer.getData("cartaId");
+     const cartaSeleccionada = cartasMano.find(c => c.id === parseInt(cartaId));
+     if (cartaSeleccionada && !tablero[1] && !esperandoJugada) {
         setEsperandoJugada(true);
 
         // 1. Primero, muestra la carta del usuario
@@ -49,9 +72,12 @@ function PartidaPage(){
             // 2. Luego, espera la respuesta y muestra la carta del servidor
             const response = await realizarJugada(token, cartaId, partidaId, usuarioId);
             if (response.status === 200) {
+                
                 setTablero([ response.data['carta jugada por el servidor'], cartaSeleccionada ]);
+                setCartasServidor(cartasServidor.filter(c => c.id !== response.data['carta jugada por el servidor'].id));
                 setResultadoJugada(response.data['Resultado:']);
                 if (response.data['El ganador de la partida es:']) {
+                    
                     setGanador(response.data['El ganador de la partida es:']);
                 }
             }
@@ -82,7 +108,6 @@ function PartidaPage(){
     }
 
     const nuevaPartida = async () => {
-        //devolver a en_mano el estado de todas las cartas del mazo utilizadas
         try{
            const response = await crearPartida(mazo.id, token);
            if (response.status === 200) {
@@ -91,8 +116,6 @@ function PartidaPage(){
             // Actualiza el estado con la nueva partida
              navigate('/partida', {
                  state: {
-                     mazo,
-                     cartas: nuevasCartas,
                      partidaId: nuevoPartidaId
                  }
              });
@@ -110,7 +133,19 @@ function PartidaPage(){
     return(
         <div>
             <h3 className="partida"> Partida en curso... </h3>
+
+            <div className="mazo-jugando">
+                {cartasServidor && cartasServidor.map((cartaServidor)=>(
+                  <div
+                    key={cartaServidor.id}
+                    className="carta">
+                        <img src={`/images/${cartaServidor.atributo.toLowerCase().replace(/\s+/g, '') + '.png'}`}
+                         className="carta-imagen" />
+                  </div>
+                ))}
             
+            </div>
+
             <section className="tablero">
                {/*casillero del servidor*/}
                  <div className="casillero-carta">
@@ -152,7 +187,7 @@ function PartidaPage(){
                      )}
                  </div>
             </section>
-            <div className="mazo-jugador">
+            <div className="mazo-jugando">
                 {cartasMano && cartasMano.map((carta)=>(
                      <div
                        key={carta.id}

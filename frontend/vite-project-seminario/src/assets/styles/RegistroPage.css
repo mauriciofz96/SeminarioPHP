@@ -43,6 +43,9 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+.registro-boton:hover {
+  background-color: #e61515;
+}
 
 .registro-boton:disabled {
   background-color: #aaa;

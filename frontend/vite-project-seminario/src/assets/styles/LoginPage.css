@@ -46,7 +46,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
+ 
 .login-boton:hover {
   background-color: #1f1f1f;
 }

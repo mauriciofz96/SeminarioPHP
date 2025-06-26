@@ -115,3 +115,12 @@ export function realizarJugada(token,carta_id,partida_id,usuario_id){
   })
 }
 
+//listar cartas en mano de la partida actual
+export function listarCartasEnMano(usuario,partida,token){
+  return axios.get(`/api/usuarios/${usuario}/partidas/${partida}/cartas`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+

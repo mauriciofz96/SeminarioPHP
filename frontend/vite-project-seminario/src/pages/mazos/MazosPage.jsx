@@ -113,14 +113,12 @@ function MazosPage(){
         const response = await crearPartida(mazo.id,token);
         if (response.status === 200){
             console.log("Partida creada exitosamente");
-            const cartas = response.data.cartas;
             const partidaId = response.data.partida_id;
 
             navigate('/partida',{
                 state:{
-                    mazo,
-                    cartas,
-                    partidaId
+                    id,
+                    partidaId,
                 }
             });
          }

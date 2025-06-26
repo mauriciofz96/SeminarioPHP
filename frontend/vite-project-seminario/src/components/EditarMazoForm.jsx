@@ -12,8 +12,8 @@ function EditarMazoForm({nuevoNombre, setNuevoNombre, onGuardar, onCancel, onCli
               value={nuevoNombre}
               onChange={e => setNuevoNombre(e.target.value)}
             />
-            <button type="submit">Guardar</button>
-            <button type="button" onClick={onCancel}>Cancelar</button>
+            <button className="modal-boton" type="submit">Guardar</button>
+            <button className="modal-boton" type="button" onClick={onCancel}>Cancelar</button>
         </form>
     )
 }

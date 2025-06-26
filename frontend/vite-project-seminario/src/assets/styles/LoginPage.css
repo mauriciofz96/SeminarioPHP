@@ -29,9 +29,24 @@
 }
 
 
-
+ 
 .login-error {
   color: red;
   margin-top: 12px;
   text-align: center;
+}
+
+.login-boton {
+  background-color: #2f2f2f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-boton:hover {
+  background-color: #1f1f1f;
 }

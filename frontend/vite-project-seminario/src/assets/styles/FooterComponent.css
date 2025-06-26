@@ -1,16 +1,21 @@
 .footer {
-  width: 100%;
-  padding: 1rem 2rem;
-  background: linear-gradient(90deg, #182848, #4b6cb7); /* mismo estilo que el header pero en orden normal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.5rem;
+  background: #2f2f2f;
+  border-radius: 10px; /* redondeado en todos los bordes */
+  box-shadow: 0 4px 8px -2px #ffd700; /* sombra amarilla solo debajo */
   color: white;
-  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 0.9rem;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
-  position: relative;
-  bottom: 0;
-  left: 0;
+  text-align: center;
+  width: fit-content;
+  margin: 2rem auto 0 auto; 
 }
 
 .footer p {
   margin: 0;
+  font-weight: 500;
 }

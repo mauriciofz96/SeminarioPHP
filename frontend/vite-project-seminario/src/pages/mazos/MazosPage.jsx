@@ -152,10 +152,10 @@ function MazosPage(){
                         <span >{mazo.nombre}</span>
                        {mazoSeleccionado ==mazo.id &&
                        <div className="mazo-opciones">
-                          <button onClick={() =>handleVerMazo(mazo)}>Ver Mazo</button>
-                          <button onClick={()=>handleEliminar(mazo)}> Eliminar</button>
-                          <button onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}> Editar</button>
-                          <button onClick={()=>handleJugar(mazo)}> Jugar</button>
+                          <button className="modal-boton" onClick={() =>handleVerMazo(mazo)}>Ver Mazo</button>
+                          <button className="modal-boton" onClick={()=>handleEliminar(mazo)}> Eliminar</button>
+                          <button className="modal-boton" onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}> Editar</button>
+                          <button className="modal-boton" onClick={()=>handleJugar(mazo)}> Jugar</button>
                         </div>}
                         {editando === mazo.id &&(
                             <EditarMazoForm

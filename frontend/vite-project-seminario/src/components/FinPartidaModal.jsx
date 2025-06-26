@@ -18,3 +18,4 @@ function FinPartida({ganador, mensaje, onNuevaPartida, onFinalizarPartida}){
     )
 }
 export default FinPartida;
+ 

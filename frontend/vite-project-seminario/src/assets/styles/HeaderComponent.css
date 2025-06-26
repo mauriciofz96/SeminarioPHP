@@ -1,21 +1,25 @@
 .header {
   display: flex;
   align-items: center;
-  padding: 1rem 2rem;
-  background: linear-gradient(40deg,#b91818, #e85b14);
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(to right, #cc0000, #aa0000);
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-bottom: 4px solid #ffd700;
+  border-radius: 12px 12px 0 0; /* redondeado arriba solamente */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+
 .header img {
-  height: 48px;
-  margin-right: 16px;
+  height: 50px;
+  margin-right: 12px;
 }
 
 .header h1 {
-  
-  font-size: 1.8rem;
+  font-size: 1.9rem;
+  font-weight: bold;
   margin: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }

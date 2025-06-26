@@ -6,7 +6,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
+ 
 .stats-titulo {
   text-align: center;
   margin-bottom: 24px;
@@ -22,7 +22,7 @@
 }
 
 .stats-tabla th {
-  background-color: #b91818;
+  background-color: #2f2f2f;
   color: #ffffff;
   font-weight: bold;
 }
@@ -41,4 +41,22 @@
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.stats-boton-orden {
+  background: linear-gradient(to right, #cc0000, #aa0000);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.stats-boton-orden:hover {
+  background: linear-gradient(to right, #d62828, #b20000);
+  transform: translateY(-2px);
 }

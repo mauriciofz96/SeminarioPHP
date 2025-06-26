@@ -210,7 +210,7 @@ function PartidaPage(){
             {resultadoJugada &&(
                 <div className="resultado">
                     <h3>{mensajeResultado(resultadoJugada)}</h3>
-                    <button onClick={() => {
+                    <button className="button" onClick={() => {
                         setTablero(Array(2).fill(null));
                         setResultadoJugada(null);
                     }}>

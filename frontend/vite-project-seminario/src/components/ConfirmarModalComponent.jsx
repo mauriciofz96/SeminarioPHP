@@ -3,12 +3,12 @@ function ConfirmarModal({mensaje, onConfirmar, onCancelar}){
         <div className="modal-fondo">
             <div className="modal-contenido">
                 <p>{mensaje}</p>
-                <button onClick={onConfirmar}>Eliminar Mazo</button>
-                <button onClick={onCancelar}>Cancelar</button>
+                <button className="modal-boton" onClick={onConfirmar}>Eliminar Mazo</button>
+                <button className="modal-boton" onClick={onCancelar}>Cancelar</button>
             </div>
         </div>
     )
 
 }
-
+ 
 export default ConfirmarModal;

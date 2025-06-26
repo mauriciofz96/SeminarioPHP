@@ -55,12 +55,12 @@
   gap: 20px; /* espacio entre cartas */
   justify-items: center; /* centra cada carta */
 }
-
+ 
 .crear-btn {
   margin-top: 20px;
   padding: 10px 25px;
   font-size: 1rem;
-  background-color: #de5510;
+  background-color: #2f2f2f;
   color: white;
   border: none;
   border-radius: 5px;

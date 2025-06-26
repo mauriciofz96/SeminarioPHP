@@ -112,6 +112,7 @@ class PartidaController{
         }
 
         
+        $carta_b['id'] = $carta_id_b; //pra obtener el id de carta jugada por el servidor
         $jugada_id=Partida::crearJugada($carta_id_a,$carta_id_b,$partida_id);
 
         if($jugada_id === false){

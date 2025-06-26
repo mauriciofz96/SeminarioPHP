@@ -33,10 +33,10 @@ class CartaController {
     
         $usuarioLogueado = $request->getAttribute('usuario_id'); 
     
-        
-        if ($usuarioLogueado != $usuarioPath) {
-            $response->getBody()->write(json_encode(['error' => 'No autorizado']));
-            return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
+        //Modificado ESTE if, para poder obtener las cartas del servidor tambien 
+        if ($usuarioLogueado != $usuarioPath && $usuarioPath != 1) {
+          $response->getBody()->write(json_encode(['error' => 'No autorizado']));
+         return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
         }
     
         
@@ -56,7 +56,7 @@ class CartaController {
             $response->getBody()->write(json_encode($cartas));
             return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $response->getBody()->write(json_encode(['error' => 'Error interno del servidor']));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }

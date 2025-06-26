@@ -8,7 +8,7 @@
 }
 
 .mazo.seleccionado{
-    background-color:#83a4bc;
+    background-color:#ff3c009f;
 }
 
 .mazo-opciones{
@@ -19,6 +19,8 @@
 }
 
 .editar-form{
+    display:flex;
+    padding:5px;
     gap:5px;
     margin-left: 10px ;
 }
@@ -35,7 +37,7 @@
 
 .modal-contenido{
     position:relative;
-    background-color: rgb(163, 212, 227);
+    background-color: #fc843a;
     padding:24px;
     border-radius: 10px;
     min-width:300px;
@@ -46,7 +48,7 @@
 .cartas-lista{
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 5px;
     list-style: none;
     padding: 0;
     justify-content: center;
@@ -56,7 +58,7 @@
 .close-button{
     position:absolute;
     top:12px; right:12px; 
-    background: #7798b3;
+    background: #e61515;
     color: #fff;
     border: none;
     border-radius: 50%;

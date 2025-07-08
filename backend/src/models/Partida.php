@@ -247,7 +247,7 @@ class Partida {
         }
 
     }
- 
+  
     
     private static function calcularGanadorPartida($resultado){
         $conteo=array_count_values($resultado); //cuento la cantidad de veces que aparecen los resultados: gano, perdio, empato

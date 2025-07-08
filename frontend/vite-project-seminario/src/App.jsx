@@ -5,12 +5,9 @@ import FooterComponent from './components/FooterComponent'
 import NavBarComponent from './components/NavBarComponent'
 import Estadisticas from './pages/stat/StatPage'
 import RegistroPage from './pages/registro/RegistroPage'
-import RegistroExitoso from './pages/registro/RegistroExitoso'
-import RegistroFallido from './pages/registro/RegistroFallido'
 import Login from './pages/login/LoginPage'
 import LogoutPage from './pages/logout/LogoutPage'
 import EditUserPage from './pages/edit/EditUserPage'
-import EdicionExitosaPage from './pages/edit/EdicionExitosaPage'
 import MazosPage from './pages/mazos/MazosPage'
 import CrearMazoPage from './pages/mazos/CrearMazoPage';
 import PartidaPage from './pages/partida/PartidaPage'
@@ -39,8 +36,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/estadisticas" element={<Estadisticas />} />
           <Route path="/register" element={<RegistroPage />} />
-          <Route path="/registro-exitoso" element={<RegistroExitoso />} />
-          <Route path="/registro-fallido" element={<RegistroFallido />} />
 
           {/* Evitar acceso a /login si ya está logueado */}
           <Route
@@ -63,12 +58,6 @@ function App() {
                 : <Navigate to="/login" replace />
             }
           />
-
-          <Route path="/edicion-exitosa" element={
-            isLoggedIn
-              ? <EdicionExitosaPage />
-              : <Navigate to="/login" replace />
-          } />
 
           <Route 
           path="/mis-mazos" element={

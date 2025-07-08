@@ -27,8 +27,8 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
 
         //Simulacion de peticion a API
         try {
-            if(isLoggedIn === true) { //revisar ESTO!!!
-                throw new error('Ya estás logueado');
+            if(isLoggedIn === true) { 
+                throw new Error('Ya estás logueado');
             }
             const response = await postLogin({ usuario, password});
 
@@ -45,10 +45,10 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
             localStorage.setItem('id', data.id); // Guardar id en localStorage
             setIsLoggedIn(true); // Actualizar estado de inicio de sesión
             
-            //Esto todavia no lo hice andar
+            
             setIsLoggedIn(true); // Actualizar estado de inicio de sesión
             setUserName(data.nombre); // Actualizar nombre de usuario
-            alert('Login exitoso');
+            //alert('Login exitoso');
             //
 
         } catch(error){
@@ -91,7 +91,7 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
                 Iniciar sesión
             </button>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="registro-mensaje error">{error}</p>}
             </form>
         </main>
     )

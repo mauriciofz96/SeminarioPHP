@@ -11,4 +11,4 @@ function ConfirmarModal({mensaje, onConfirmar, onCancelar}){
 
 }
  
-export default ConfirmarModal;
+export default ConfirmarModal; 

@@ -1,6 +1,5 @@
 import '../../assets/styles/RegistroPage.css'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { validarRegistro } from '../../utils/validaciones'
 import { verificarUsuarioDisponible, registrarUsuario } from '../../services/apiService'
 
@@ -10,8 +9,12 @@ function RegistroPage() {
     nombre: '',
     password: ''
   })
+
   const [procesando, setProcesando] = useState(false)
-  const navigate = useNavigate()
+
+  // Nuevo estado para el mensaje (éxito o error)
+  const [mensaje, setMensaje] = useState(null) // null, string de error o string de éxito
+  const [tipoMensaje, setTipoMensaje] = useState(null) // 'exito' o 'error'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -23,7 +26,8 @@ function RegistroPage() {
 
     const errores = validarRegistro(formData)
     if (errores !== true) {
-      navigate('/registro-fallido', { state: { mensaje: errores } })
+      setMensaje(errores)
+      setTipoMensaje('error')
       setProcesando(false)
       return
     }
@@ -31,29 +35,34 @@ function RegistroPage() {
     try {
       const respuesta = await verificarUsuarioDisponible(formData.usuario)
       if (!respuesta.data.disponible) {
-        navigate('/registro-fallido', {
-          state: { mensaje: 'El usuario ya está en uso.' }
-        })
+        setMensaje('El usuario ya está en uso.')
+        setTipoMensaje('error')
         setProcesando(false)
         return
       }
 
       await registrarUsuario(formData)
-      navigate('/registro-exitoso', {
-        state: { mensaje: 'Registro exitoso. Ahora podés iniciar sesión.' }
-      })
+      setMensaje('Registro exitoso. Ahora podés iniciar sesión.')
+      setTipoMensaje('exito')
     } catch (error) {
-      navigate('/registro-fallido', {
-        state: { mensaje: 'Error al registrar. Intente nuevamente más tarde.' }
-      })
+      setMensaje('Error al registrar. Intente nuevamente más tarde.')
+      setTipoMensaje('error')
     } finally {
       setProcesando(false)
     }
   }
- 
+
   return (
     <main className="registro-main">
       <h2 className="registro-titulo">Registro de Usuario</h2>
+
+      {/* Mostrar mensaje si existe */}
+      {mensaje && (
+        <div className={`registro-mensaje ${tipoMensaje === 'exito' ? 'exito' : 'error'}`}>
+          <p>{mensaje}</p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div className="registro-grupo">
           <label htmlFor="usuario" className="registro-label">Usuario:</label>

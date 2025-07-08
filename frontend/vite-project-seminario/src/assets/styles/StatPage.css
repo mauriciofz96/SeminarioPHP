@@ -32,9 +32,10 @@
 }
 
 .stats-fila-mejor {
-  background-color: #c8f7c5 !important;
+  background-color: #b33434 !important;
+  font-weight: bold;
 }
-
+ 
 .stats-controles {
   margin-top: 2rem;
   justify-content: space-between;

@@ -82,7 +82,7 @@ const handleDrop = async (e) => {
 
         console.log("Cartas servidor después de jugar:", cartasServidor);
 
-        setResultadoJugada(response.data['Resultado:']);
+        setResultadoJugada(response.data['resultado']);
         if (response.data['El ganador de la partida es:']) {
           setGanador(response.data['El ganador de la partida es:']);
         }

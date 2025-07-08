@@ -1,8 +1,8 @@
 import '../../assets/styles/RegistroPage.css'
+import { obtenerUsuario, actualizarUsuario } from '../../services/apiService'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { validarEdicionUsuario } from '../../utils/validaciones'
-import { actualizarUsuario } from '../../services/apiService'
 
 function EditUserPage() {
   const [formData, setFormData] = useState({
@@ -10,29 +10,48 @@ function EditUserPage() {
     password: '',
     repetirPassword: ''
   })
-
+  
+  const [nombreOriginal, setNombreOriginal] = useState('')
   const [errores, setErrores] = useState([])
   const [procesando, setProcesando] = useState(false)
+  const [mensajeExito, setMensajeExito] = useState('')
   const navigate = useNavigate()
 
-  // Obtenemos info del localStorage
-  const id = localStorage.getItem('id')         // usamos el ID en lugar del nombre de usuario
+  const id = localStorage.getItem('id')
   const token = localStorage.getItem('token')
 
   useEffect(() => {
     if (!id || !token) {
       navigate('/login')
+      return
     }
+
+    const cargarDatos = async () => {
+      try {
+        const response = await obtenerUsuario(id, token)
+        const nombre = response.data.nombre || ''
+        setNombreOriginal(nombre)
+        setFormData(prev => ({
+          ...prev,
+          nombre
+        }))
+      } catch (err) {
+        console.error('Error al cargar datos:', err)
+      }
+    }
+
+    cargarDatos()
   }, [id, token, navigate])
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setProcesando(true)
     setErrores([])
+    setMensajeExito('')
 
     const erroresValidacion = validarEdicionUsuario(
       formData.nombre,
@@ -46,6 +65,17 @@ function EditUserPage() {
       return
     }
 
+    // Evitar envío si no se hizo ningún cambio
+    if (
+      formData.nombre === nombreOriginal &&
+      formData.password.trim() === '' &&
+      formData.repetirPassword.trim() === ''
+    ) {
+      setErrores(['No realizaste ningún cambio.'])
+      setProcesando(false)
+      return
+    }
+
     try {
       const datos = {
         nombre: formData.nombre,
@@ -54,11 +84,14 @@ function EditUserPage() {
 
       await actualizarUsuario(id, datos, token)
 
-      navigate('/edicion-exitosa', {
-        state: { mensaje: 'Datos actualizados correctamente.' }
-      })
+      setMensajeExito('Datos actualizados correctamente.')
     } catch (error) {
-      setErrores(['Error al actualizar. Intente nuevamente más tarde.'])
+      const mensajeDelBackend = error.response?.data?.error
+      console.error('Error del backend:', mensajeDelBackend)
+
+      setErrores([
+        mensajeDelBackend || 'Error al actualizar. Intente nuevamente más tarde.'
+      ])
     } finally {
       setProcesando(false)
     }
@@ -68,8 +101,12 @@ function EditUserPage() {
     <main className="registro-main">
       <h2 className="registro-titulo">Editar Usuario</h2>
 
+      {mensajeExito && (
+        <div className="registro-mensaje exito">{mensajeExito}</div>
+      )}
+
       {errores.length > 0 && (
-        <ul style={{ color: 'red', marginBottom: '16px' }}>
+        <ul className="registro-errores">
           {errores.map((error, i) => (
             <li key={i}>{error}</li>
           ))}
@@ -78,7 +115,9 @@ function EditUserPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="registro-grupo">
-          <label htmlFor="nombre" className="registro-label">Nombre:</label>
+          <label htmlFor="nombre" className="registro-label">
+            Nombre:
+          </label>
           <input
             id="nombre"
             type="text"
@@ -90,7 +129,9 @@ function EditUserPage() {
         </div>
 
         <div className="registro-grupo">
-          <label htmlFor="password" className="registro-label">Nueva Contraseña:</label>
+          <label htmlFor="password" className="registro-label">
+            Nueva Contraseña:
+          </label>
           <input
             id="password"
             type="password"
@@ -102,7 +143,9 @@ function EditUserPage() {
         </div>
 
         <div className="registro-grupo">
-          <label htmlFor="repetirPassword" className="registro-label">Repetir Contraseña:</label>
+          <label htmlFor="repetirPassword" className="registro-label">
+            Repetir Contraseña:
+          </label>
           <input
             id="repetirPassword"
             type="password"

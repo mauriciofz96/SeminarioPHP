@@ -7,7 +7,7 @@ import axios from 'axios'
 export function getEstadisticas() {
   return axios.get('/api/estadisticas')
 }
-
+ 
 // Verificar si un nombre de usuario está disponible
 export function verificarUsuarioDisponible(usuario) {
   return axios.get(`/api/verificar-usuario/${usuario}`)
@@ -21,6 +21,15 @@ export function registrarUsuario(data) {
 // iniciar sesion
 export function postLogin(credentials){
   return axios.post('/api/login', credentials)
+}
+
+// obtener datos de un usuario logeado
+export function obtenerUsuario(id, token) {
+  return axios.get(`/api/usuarios/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }
 
 // editar datos de un usuario logeado

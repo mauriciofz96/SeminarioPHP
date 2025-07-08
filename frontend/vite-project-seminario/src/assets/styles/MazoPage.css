@@ -80,3 +80,7 @@
     justify-content: center;
 }
 
+.close-button:hover{
+    background-color: #e61515;
+}
+

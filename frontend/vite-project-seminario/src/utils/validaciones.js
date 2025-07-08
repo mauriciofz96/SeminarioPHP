@@ -66,12 +66,12 @@ export function validarEdicionUsuario(nombre, password, repetirPassword) {
   }
 
   if (password || repetirPassword) {
-    const erroresPassword = validarPassword(password)
-    if (erroresPassword.length > 0) {
-      errores.push(...erroresPassword)
-    } else if (password !== repetirPassword) {
+    if (password !== repetirPassword) {
       errores.push('Las contraseñas no coinciden.')
     }
+
+    const erroresPassword = validarPassword(password)
+    errores.push(...erroresPassword)
   }
 
   return errores

@@ -126,7 +126,7 @@ class PartidaController{
             'carta jugada por el servidor' => $carta_b,
             'fuerza carta a' => $datos_jugada['fuerza_a'],
             'fuerza carta b'=> $datos_jugada['fuerza_b'],
-            'resultado:'=> $datos_jugada['el_usuario']
+            'resultado'=> $datos_jugada['el_usuario']
         ];
 
         
@@ -137,7 +137,7 @@ class PartidaController{
             
             $ganador=Partida::cerrarPartida($partida_id,$usuario);
             
-            $respuesta['el ganador de la partida es:'] = $ganador;
+            $respuesta['el ganador de la partida es'] = $ganador;
         }
         
         $response->getBody()->write(json_encode($respuesta));

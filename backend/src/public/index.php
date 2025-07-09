@@ -37,6 +37,7 @@ use App\Controllers\UserController;
 use App\Controllers\MazoController;
 use App\Controllers\CartaController;
 use App\middleware\AuthMiddleware;
+use App\middleware\CorsMiddleware;
 
 $app = AppFactory::create();
 
@@ -44,6 +45,9 @@ $app = AppFactory::create();
 $app->addRoutingMiddleware();
 $app->addBodyParsingMiddleware();
 $app->addErrorMiddleware(true, true, true);
+//nuevo: CORS
+$app->add(new CorsMiddleware()); 
+//
 
 // Endpoint de prueba
 $app->get('/', function (Request $request, Response $response) {

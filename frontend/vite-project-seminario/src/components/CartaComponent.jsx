@@ -6,7 +6,10 @@ const CartaComponent = ({ carta, seleccionadas, toggleCarta }) => {
   const nombreImagen = carta.nombre.toLowerCase().replace(/\s+/g, '') + '.png'
 
   return (
-    <div className="carta">
+    <div
+      className={`carta ${seleccionadas.includes(carta.id) ? 'seleccionada' : ''}`}
+      onClick={() => toggleCarta(carta.id)}
+    >
       <img
         src={`/images/${nombreImagen}`}
         alt={carta.nombre}
@@ -22,9 +25,12 @@ const CartaComponent = ({ carta, seleccionadas, toggleCarta }) => {
         type="checkbox"
         checked={seleccionadas.includes(carta.id)}
         onChange={() => toggleCarta(carta.id)}
+        onClick={(e) => e.stopPropagation()}
       />
     </div>
+
   )
 }
 
 export default CartaComponent
+ 

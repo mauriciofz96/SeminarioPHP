@@ -50,35 +50,50 @@ const CrearMazoPage = () => {
   };
 
   const handleCrearMazo = async () => {
-    if (!nombre || nombre.length > 20) {
-      setMensaje('El nombre es requerido y debe tener hasta 20 caracteres.');
-      return;
-    }
-    if (seleccionadas.length === 0) {
-      setMensaje('Debes seleccionar al menos una carta.');
-      return;
+    // Validaciones del FRONT
+    if (!nombre || nombre.length > 20 || seleccionadas.length === 0) {
+      try {
+        // Simulamos que el backend maneje este error (usamos el mismo endpoint)
+        await crearMazo(nombre, seleccionadas, token);
+      } catch (error) {
+        const mensajeDelBackend =
+          error.response?.data?.error ||
+          'Ocurrió un error al crear el mazo.';
+        setMensaje(mensajeDelBackend);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return; // Salimos
     }
 
     try {
+      // Validación de cantidad de mazos
       const response = await getMazos(usuarioId, token);
       if (response.data.length >= 3) {
         setMensaje('Ya tienes el máximo de 3 mazos permitidos.');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
 
+      // Intentamos crear el mazo
       await crearMazo(nombre, seleccionadas, token);
       setMensaje('¡Mazo creado exitosamente!');
       setNombre('');
       setSeleccionadas([]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      setMensaje(error.response?.data?.error || 'Error al crear el mazo.');
+      const mensajeDelBackend =
+        error.response?.data?.error ||
+        'Ocurrió un error al crear el mazo.';
+      setMensaje(mensajeDelBackend);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
+
 
   return (
     <div className="crear-mazo-container">
       <h2>Crear Mazo</h2>
-
+      {mensaje && <p className="mensaje-error">{mensaje}</p>}
       <label htmlFor="nombre-mazo">Nombre del mazo:</label>
       <input
         id="nombre-mazo"
@@ -135,11 +150,10 @@ const CrearMazoPage = () => {
         ))}
       </div>
 
-      <button className="crear-btn" onClick={handleCrearMazo}>
+      <button className="crear-btn-flotante" onClick={handleCrearMazo}>
         Crear Mazo
       </button>
 
-      {mensaje && <p className="mensaje-error">{mensaje}</p>}
     </div>
   );
 };

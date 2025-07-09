@@ -71,11 +71,23 @@
 }
 
 .crear-btn:hover {
-  background-color: #b04b18;
+  background-color: #8f0303;
 }
 
 .mensaje-error {
   margin-top: 15px;
   color: red;
   font-weight: bold;
+}
+
+.crear-btn-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.crear-btn-flotante:hover {
+  background-color: #8f0303;
 }

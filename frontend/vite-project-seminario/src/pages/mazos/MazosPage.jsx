@@ -15,10 +15,9 @@ function MazosPage(){
     if (!id || !token) {
       navigate('/login')
     }
- 
+
     
     const [mazos, setMazos] = useState([]);
-    const[mazoSeleccionado, setMazoSeleccionado] = useState(null);
     //obtengo los mazos
     async function fetchMazos(){
         try{
@@ -144,26 +143,21 @@ function MazosPage(){
                     mazos.map((mazo) => (
                         <li
                         key={mazo.id} 
-                        onClick={()=> {
-                            setMazoSeleccionado(mazo.id)
-                            setEditando(null);
-                        }}
-                        className={`mazo${mazoSeleccionado === mazo.id ? ' seleccionado' : ''}`}> 
-                        <span >{mazo.nombre}</span>
-                       {mazoSeleccionado ==mazo.id &&
+                        className="mazo"> 
+                        <span className="mazo-nombre">{mazo.nombre}</span>
                        <div className="mazo-opciones">
                           <button className="modal-boton" onClick={() =>handleVerMazo(mazo)}>Ver Mazo</button>
                           <button className="modal-boton" onClick={()=>handleEliminar(mazo)}> Eliminar</button>
                           <button className="modal-boton" onClick={e => {e.stopPropagation(); handleClickEditar(mazo)}}> Editar</button>
                           <button className="modal-boton" onClick={()=>handleJugar(mazo)}> Jugar</button>
-                        </div>}
+                        </div>
                         {editando === mazo.id &&(
                             <EditarMazoForm
                             nuevoNombre={nuevoNombre}
                             setNuevoNombre={setNuevoNombre}
                             onGuardar={handleGuardar}
                             onCancel={() => setEditando(null)}
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={(e) =>e.stopPropagation() }
                             />
                         )}
                     {mensaje && <p className="mensaje-error"> {mensaje} </p>}

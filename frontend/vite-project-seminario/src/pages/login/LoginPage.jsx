@@ -52,7 +52,11 @@ function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {
             //
 
         } catch(error){
-            setError('Error al iniciar sesión: ' + error.message);
+            if (error.response && error.response.data && error.response.data.error) {
+                setError('Error al iniciar sesión: ' + error.response.data.error);
+            } else {
+                setError('Error al iniciar sesión: ' + error.message);
+            }
         }
     }
 

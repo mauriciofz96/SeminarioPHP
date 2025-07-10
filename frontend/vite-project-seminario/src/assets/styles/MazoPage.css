@@ -1,15 +1,18 @@
 .mazo{
-  cursor: pointer;
-  margin-bottom: 8px;
-  padding: 8px;
-  border-radius: 4px;
+  margin-bottom: 16px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #5554549f;
   display: flex;
   align-items: center;
 }
 
-.mazo.seleccionado{
-    background-color:#5554549f;
+.mazo-nombre{
+  font-weight: bold;
+  font-size: 1.15em;
+  color: #222;
 }
+
 
 .mazo-opciones{
     display:flex;

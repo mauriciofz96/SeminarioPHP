@@ -1,12 +1,5 @@
 import {api} from "../api/api.js";
 
-export function obtenerUsuario(usuario, token) {
-  return api.get(`/usuarios/${usuario}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-}
 export function getEstadisticas() {
   return api.get('/estadisticas')
 }

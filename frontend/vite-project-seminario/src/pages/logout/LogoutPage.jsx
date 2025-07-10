@@ -8,8 +8,11 @@ function LogoutPage({ setIsLoggedIn }) {
     const confirmLogout = window.confirm('¿Estás seguro que querés cerrar sesión?')
     if (confirmLogout) {
       
+      sessionStorage.clear();
       localStorage.removeItem('token');
       localStorage.removeItem('nombre');
+      localStorage.removeItem('id');
+      localStorage.removeItem('usuario');
       setIsLoggedIn(false) 
       navigate('/')
     } else {

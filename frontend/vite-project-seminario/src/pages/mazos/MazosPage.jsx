@@ -15,7 +15,7 @@ function MazosPage(){
     if (!id || !token) {
       navigate('/login')
     }
-
+ 
     
     const [mazos, setMazos] = useState([]);
     const[mazoSeleccionado, setMazoSeleccionado] = useState(null);

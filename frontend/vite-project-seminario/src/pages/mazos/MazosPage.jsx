@@ -1,5 +1,5 @@
-import '../../assets/styles/MazoPage.css';
-import '../../assets/styles/CartaComponent.css';
+import '../../styles/Mazo/CrearMazoPage.css'
+import '../../styles/Carta/CartaComponent.css'
 import EditarMazoForm from '../../components/EditarMazoForm';
 import MazoModalComponent from '../../components/MazoModalComponent';
 import ConfirmarModal from '../../components/ConfirmarModalComponent';

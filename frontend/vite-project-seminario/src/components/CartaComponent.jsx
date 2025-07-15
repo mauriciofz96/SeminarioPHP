@@ -1,5 +1,6 @@
 import React from 'react'
-import '../assets/styles/CartaComponent.css'
+import '../styles/Carta/CartaComponent.css';
+
 
 const CartaComponent = ({ carta, seleccionadas, toggleCarta }) => {
   // Asumiendo que la imagen se llama igual que el nombre en minúsculas y sin espacios

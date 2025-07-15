@@ -1,6 +1,6 @@
 //estilos a importar
-import '../../assets/styles/Partida.css'
-import '../../assets/styles/CartaComponent.css'
+import '../../styles/Partida/Partida.css'
+import '../../styles/Carta/CartaComponent.css'
 
 import {useEffect, useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';

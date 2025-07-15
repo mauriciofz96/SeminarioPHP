@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getEstadisticas } from '../../services/apiService'
 import { procesarEstadisticas } from '../../utils/procesarEstadisticas'
-import '../../assets/styles/StatPage.css'
+import '../../styles/Stats/StatPage.css'
 
 function StatPage() {
   const [usuarios, setUsuarios] = useState([])

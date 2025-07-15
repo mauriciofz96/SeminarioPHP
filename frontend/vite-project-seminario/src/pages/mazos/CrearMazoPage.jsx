@@ -1,7 +1,7 @@
+import '../../styles/Mazo/CrearMazoPage.css'
 import React, { useEffect, useState } from 'react';
 import { getCartas, crearMazo, getMazos } from '../../services/apiService';
 import CartaComponent from '../../components/CartaComponent';
-import '../../assets/styles/CrearMazoPage.css';
 
 const CrearMazoPage = () => {
   const [nombre, setNombre] = useState('');

@@ -1,4 +1,4 @@
-import '../../assets/styles/RegistroPage.css'
+import '../../styles/RegistroLoginEdit/RegistroPage.css'
 import { useState } from 'react'
 import { validarRegistro } from '../../utils/validaciones'
 import { verificarUsuarioDisponible, registrarUsuario } from '../../services/apiService'

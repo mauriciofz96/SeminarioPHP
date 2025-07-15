@@ -1,4 +1,4 @@
-import '../../assets/styles/RegistroPage.css'
+import '../../styles/RegistroLoginEdit/RegistroPage.css'
 import { obtenerUsuario, actualizarUsuario } from '../../services/apiService'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'

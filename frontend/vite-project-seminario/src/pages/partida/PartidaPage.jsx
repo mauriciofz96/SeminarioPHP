@@ -4,7 +4,7 @@ import '../../styles/Carta/CartaComponent.css'
 
 import {useEffect, useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { realizarJugada, listarCartasEnMano} from '../../services/apiService'
+import { realizarJugada, listarCartasEnMano} from '../../services/Partidas/partidaService'
 import FinPartida from '../../components/FinPartidaModal'
 
 function PartidaPage(){

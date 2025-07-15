@@ -2,7 +2,7 @@ import '../../styles/RegistroLoginEdit/RegistroPage.css'
 import { useNavigate } from "react-router-dom";
 import { useState }  from "react";
 import {useEffect} from "react";
-import { postLogin } from "../../services/apiService";
+import { postLogin } from "../../services/Users/userService";
  
 
 function LoginPage({setIsLoggedIn, setUserName, isLoggedIn}) {

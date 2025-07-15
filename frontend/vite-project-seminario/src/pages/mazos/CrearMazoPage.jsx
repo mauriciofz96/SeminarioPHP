@@ -1,6 +1,7 @@
 import '../../styles/Mazo/CrearMazoPage.css'
 import React, { useEffect, useState } from 'react';
-import { getCartas, crearMazo, getMazos } from '../../services/apiService';
+import { crearMazo, getMazos } from '../../services/Mazos/mazoService';
+import { getCartas} from '../../services/Cartas/cartaService';
 import CartaComponent from '../../components/CartaComponent';
 
 const CrearMazoPage = () => {

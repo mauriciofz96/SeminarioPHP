@@ -1,5 +1,5 @@
 import '../../styles/RegistroLoginEdit/RegistroPage.css'
-import { obtenerUsuario, actualizarUsuario } from '../../services/apiService'
+import { obtenerUsuario, actualizarUsuario } from '../../services/Users/userService'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { validarEdicionUsuario } from '../../utils/validaciones'

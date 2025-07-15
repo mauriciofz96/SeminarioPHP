@@ -1,7 +1,7 @@
 import '../../styles/RegistroLoginEdit/RegistroPage.css'
 import { useState } from 'react'
 import { validarRegistro } from '../../utils/validaciones'
-import { verificarUsuarioDisponible, registrarUsuario } from '../../services/apiService'
+import { verificarUsuarioDisponible, registrarUsuario } from '../../services/Users/userService'
 
 function RegistroPage() {
   const [formData, setFormData] = useState({

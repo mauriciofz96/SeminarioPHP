@@ -4,7 +4,8 @@ import EditarMazoForm from '../../components/EditarMazoForm';
 import MazoModalComponent from '../../components/MazoModalComponent';
 import ConfirmarModal from '../../components/ConfirmarModalComponent';
 import {useEffect, useState} from 'react';
-import { getMazos, editarMazo, getCartasEnMazo, borrarMazo, crearPartida } from "../../services/apiService";
+import { getMazos, editarMazo, getCartasEnMazo, borrarMazo } from "../../services/Mazos/mazoService";
+import { crearPartida } from "../../services/Partidas/partidaService";
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function MazosPage(){

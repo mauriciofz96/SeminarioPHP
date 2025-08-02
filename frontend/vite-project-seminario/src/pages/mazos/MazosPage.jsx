@@ -1,3 +1,4 @@
+import '../../styles/Mazo/MazoPage.css'
 import '../../styles/Mazo/CrearMazoPage.css'
 import '../../styles/Carta/CartaComponent.css'
 import EditarMazoForm from '../../components/EditarMazoForm';
@@ -190,4 +191,5 @@ function MazosPage(){
         </div>
     );
 }
+
 export default MazosPage;
